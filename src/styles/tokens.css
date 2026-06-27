@@ -164,18 +164,24 @@
   --glass-cta-bg:       rgba(245, 242, 237, 0.85); /* Ivory at 85% */
 
   /* Dark glass — hero CTA panel + floating cards over imagery */
-  --glass-dark-blur:     24px;
+  --glass-dark-blur:     28px;
   --glass-dark-saturate: 180%;
-  --glass-dark-bg:       rgba(26, 26, 24, 0.72);   /* Onyx at 72% — was 58%, raised for legibility */
-  --glass-dark-border:   rgba(245, 242, 237, 0.18); /* Ivory at 18% — was 9%, now visibly defined */
+  --glass-dark-bg:       rgba(26, 26, 24, 0.80);   /* Onyx at 80% — solid, legible CTA panel */
+  --glass-dark-border:   rgba(245, 242, 237, 0.20); /* Ivory at 20% — clearly defined edge */
 
-  /* Hero cinematic overlay — gradient layers over the background image */
-  --overlay-cinematic-start: rgba(26, 26, 24, 0.10);
-  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.62); /* was 0.45 — raised for text contrast in mid-frame */
-  --overlay-cinematic-end:   rgba(26, 26, 24, 0.94); /* was 0.92 — slightly deeper at base */
+  /* Hero cinematic overlay — three-layer composite over the background image */
+  --overlay-cinematic-start: rgba(26, 26, 24, 0.08); /* near-transparent at sky */
+  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.72); /* strong at mid-frame where heading sits */
+  --overlay-cinematic-end:   rgba(26, 26, 24, 0.97); /* near-opaque at base for CTA panel */
 
-  /* Text shadow — hero heading legibility over bright photography */
-  --hero-text-shadow: 0 2px 24px rgba(26, 26, 24, 0.55), 0 1px 6px rgba(26, 26, 24, 0.35);
+  /* Text shadow — hero heading: deep shadow for guaranteed legibility on any photo */
+  --hero-text-shadow:
+    0 2px 32px rgba(26, 26, 24, 0.90),
+    0 1px 8px  rgba(26, 26, 24, 0.70),
+    0 0px 2px  rgba(26, 26, 24, 0.50);
+
+  /* Third-party brand colours — exceptions to the palette, never used decoratively */
+  --whatsapp: #25D366; /* WhatsApp brand green — FAB only */
 
   /* ─── Layout ────────────────────────────────────────────────────────────── */
   --content-width:       80rem;  /* 1280px — maximum content container width */

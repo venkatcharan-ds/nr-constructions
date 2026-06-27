@@ -1,5 +1,6 @@
 import { DesktopNav } from "@/components/layout/navigation/desktop-nav";
 import { MobileNav } from "@/components/layout/navigation/mobile-nav";
+import { WhatsAppFab } from "@/components/ui/whatsapp-fab";
 
 interface MarketingLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,11 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
       <DesktopNav />
       <MobileNav />
       <main id="main-content">{children}</main>
+      {/*
+        WhatsApp FAB — fixed, z-toast (500), outside every section's
+        overflow / stacking context so it is always reachable.
+      */}
+      <WhatsAppFab />
     </>
   );
 }

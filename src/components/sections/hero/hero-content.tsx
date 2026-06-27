@@ -22,15 +22,20 @@ export function HeroContent() {
   return (
     <div className="absolute inset-0 flex flex-col pointer-events-none">
       {/*
-        Flex spacer — grows to consume all vertical space above the content on tall
-        screens (replicating the luxury bottom-anchor aesthetic), but never shrinks
-        below the nav height so content can never overflow upward behind the nav.
-        Desktop nav: h-nav (4.5rem). Mobile nav: h-mobile-nav (4rem).
+        Two equal flex-1 spacers bracket the content block so it is
+        vertically centred between the nav bottom and the section bottom —
+        the "luxury lower-left" aesthetic without hard-coding any position.
+
+        The top spacer has min-h-mobile-nav / min-h-nav so the heading
+        can never collide with the fixed navigation on short viewports.
+        The bottom spacer has no minimum — it can shrink to zero on
+        constrained heights, at which point the section expands beyond
+        min-h-dvh (graceful overflow downward, never upward).
       */}
       <div className="flex-1 min-h-mobile-nav lg:min-h-nav" aria-hidden="true" />
 
-      {/* ── Main content — anchored toward lower-left ──────────────────── */}
-      <div className="container-site pb-space-6 sm:pb-space-8 md:pb-space-9 lg:pb-space-10 xl:pb-space-11 pointer-events-auto">
+      {/* ── Main content — vertically centred, left-anchored ───────────── */}
+      <div className="container-site pb-space-5 sm:pb-space-6 lg:pb-space-7 pointer-events-auto">
         <motion.div
           variants={heroContainerVariants}
           initial="hidden"
@@ -92,6 +97,9 @@ export function HeroContent() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Bottom spacer — mirrors the top spacer to keep content centred */}
+      <div className="flex-1" aria-hidden="true" />
 
       {/* ── Scroll indicator ───────────────────────────────────────────── */}
       <div className="absolute bottom-space-6 left-1/2 -translate-x-1/2 pointer-events-none hidden md:flex flex-col items-center gap-space-2">

@@ -35,6 +35,7 @@
   --color-fog:        var(--fog);
   --color-white:      var(--white);
   --color-deep-water: var(--deep-water);
+  --color-whatsapp:   var(--whatsapp);
 
   /* ── Color: Brand Accent ─────────────────────────────────────────────── */
   --color-laterite:       var(--laterite);
@@ -485,25 +486,40 @@
     );
   }
 
-  /* Cinematic overlay — full-screen hero. Darkens bottom for text, lightens top for image. */
+  /*
+    Cinematic overlay — three composited layers for premium legibility.
+    Layer 1: bottom-to-top vignette  (text lives at the base)
+    Layer 2: left-side darkening     (text column is on the left half)
+    Layer 3: radial spot             (dark ellipse centred on the text area)
+    All colour values reference --onyx via color-mix — no hardcoded hex.
+  */
   .overlay-cinematic {
     background:
-      /* Vertical gradient: heavy dark base fading up */
+      /* 1. Bottom vignette: near-opaque base → transparent sky */
       linear-gradient(
         to top,
-        var(--overlay-cinematic-end)   0%,
-        var(--overlay-cinematic-mid)   35%,   /* was 45% — keeps mid zone darker for heading legibility */
-        var(--overlay-cinematic-start) 100%
+        var(--overlay-cinematic-end)                        0%,
+        var(--overlay-cinematic-mid)                       28%,
+        color-mix(in srgb, var(--onyx) 18%, transparent)  60%,
+        var(--overlay-cinematic-start)                    100%
       ),
-      /* Left-edge vignette: eases the text zone away from the bright image centre */
+      /* 2. Left-column darkening: text & CTA live in the left 50% */
       linear-gradient(
         to right,
-        color-mix(in srgb, var(--onyx) 32%, transparent) 0%,
-        transparent 60%
+        color-mix(in srgb, var(--onyx) 70%, transparent)  0%,
+        color-mix(in srgb, var(--onyx) 40%, transparent) 30%,
+        color-mix(in srgb, var(--onyx) 10%, transparent) 55%,
+        transparent                                        75%
+      ),
+      /* 3. Radial spot behind typography: lower-left ellipse */
+      radial-gradient(
+        ellipse 65% 55% at 18% 88%,
+        color-mix(in srgb, var(--onyx) 60%, transparent)  0%,
+        transparent                                       100%
       );
   }
 
-  /* Hero heading text shadow — token-referenced, not hardcoded */
+  /* Hero heading text shadow — token-referenced */
   .text-shadow-hero {
     text-shadow: var(--hero-text-shadow);
   }
