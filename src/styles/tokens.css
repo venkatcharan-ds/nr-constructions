@@ -1,0 +1,206 @@
+/* =============================================================================
+   NR Constructions — Raw Design Tokens
+   v1.0
+
+   Single source of truth for every visual value in the brand.
+   Rules:
+     - This file contains ONLY CSS custom properties. No Tailwind. No classes.
+     - Components NEVER reference these variables directly.
+     - Components consume Tailwind utility classes defined in globals.css,
+       which map to these variables via @theme inline.
+     - Dark mode: override the relevant variables in [data-theme="dark"].
+   ============================================================================= */
+
+:root {
+
+  /* ─── Color Palette ────────────────────────────────────────────────────── */
+  /*
+     Derived from Goa's landscape: laterite stone, afternoon sun, sea-bleached
+     walls, and the deep green of the Western Ghats.
+  */
+
+  /* Neutrals */
+  --onyx:       #1A1A18; /* Primary text, dark backgrounds. Near-black with warm undertone. */
+  --ivory:      #F5F2ED; /* Primary background. Warm white from bleached Goan limestone. */
+  --stone:      #8C8680; /* Secondary text, borders, icon strokes. Warm mid-grey. */
+  --fog:        #E8E4DF; /* Subtle fills, input backgrounds, dividers. Near-background. */
+  --white:      #FFFFFF; /* Pure white. Used only where ivory would create insufficient contrast. */
+  --deep-water: #2C3A47; /* Dark section backgrounds — footer, testimonials. Coastal navy. */
+
+  /* Brand Accent — Laterite (Goa's native laterite stone) */
+  --laterite:       #C17F4A; /* Primary accent. CTAs, price highlights, active states. */
+  --laterite-light: #D4996A; /* Hover state on laterite surfaces. */
+  --laterite-dark:  #9E6535; /* Active/pressed state. High-contrast applications. */
+
+  /* Semantic — functional only, not decorative */
+  --success: #4A7C59; /* Confirmations, "Ready to Move" badge. Muted forest green. */
+  --error:   #A0402D; /* Validation errors. Deep terracotta — contextually Goan. */
+
+  /* ─── Semantic Color Surfaces ──────────────────────────────────────────── */
+  /*
+     These reference the palette above and are the layer that @theme inline maps.
+     For dark mode: override these, not the raw palette above.
+  */
+
+  /* Backgrounds */
+  --surface-primary:  var(--ivory);
+  --surface-dark:     var(--onyx);
+  --surface-footer:   var(--deep-water);
+  --surface-input:    var(--fog);
+  --surface-card:     var(--ivory);
+  --surface-overlay:  rgba(26, 26, 24, 0.5); /* Modal backdrop */
+
+  /* Text */
+  --text-primary:   var(--onyx);
+  --text-secondary: var(--stone);
+  --text-on-dark:   var(--ivory);
+  --text-on-accent: var(--ivory);
+  --text-accent:    var(--laterite);
+  --text-disabled:  var(--stone);
+
+  /* Borders */
+  --border-default:  var(--fog);
+  --border-strong:   var(--stone);
+  --border-focus:    var(--laterite);
+  --border-accent:   var(--laterite);
+
+  /* ─── Shadow Scale ─────────────────────────────────────────────────────── */
+  /*
+     All shadows use --onyx color (not pure black) to preserve warmth.
+     The -raw suffix marks these as overridable for dark mode.
+  */
+  --shadow-xs-raw:     0 1px 2px  rgba(26, 26, 24, 0.06);
+  --shadow-sm-raw:     0 2px 8px  rgba(26, 26, 24, 0.08);
+  --shadow-md-raw:     0 4px 16px rgba(26, 26, 24, 0.10);
+  --shadow-lg-raw:     0 8px 32px rgba(26, 26, 24, 0.12);
+  --shadow-xl-raw:     0 16px 64px rgba(26, 26, 24, 0.16);
+  --shadow-accent-raw: 0 4px 20px rgba(193, 127, 74, 0.25); /* Laterite glow — hover only */
+
+  /* ─── Spacing Scale ────────────────────────────────────────────────────── */
+  /*
+     Built on an 8px base unit with Fibonacci-inspired jumps at larger values.
+     In components: use p-space-5, not p-6.
+     Tailwind utilities generated: p-space-*, m-space-*, gap-space-*, w-space-*, h-space-*
+  */
+  --space-1:  0.25rem;  /*  4px — micro gaps: icon-to-label, badge padding */
+  --space-2:  0.5rem;   /*  8px — tight internal component spacing */
+  --space-3:  0.75rem;  /* 12px — compact internal padding */
+  --space-4:  1rem;     /* 16px — standard padding, form field padding */
+  --space-5:  1.5rem;   /* 24px — component internal padding, card padding */
+  --space-6:  2rem;     /* 32px — between related elements */
+  --space-7:  3rem;     /* 48px — between components within a section */
+  --space-8:  4rem;     /* 64px — section internal breathing room */
+  --space-9:  6rem;     /* 96px — between major sections (desktop) */
+  --space-10: 8rem;     /* 128px — hero padding, large section separators */
+  --space-11: 12rem;    /* 192px — full-bleed section padding */
+
+  /* ─── Border Radius Scale ──────────────────────────────────────────────── */
+  /*
+     Restrained. Buttons use radius-md only. Large rounded containers are
+     prohibited (they read as playful, not architectural).
+  */
+  --radius-sm:   0.125rem; /* 2px  — subtle: tags, small chips */
+  --radius-md:   0.25rem;  /* 4px  — inputs, buttons (primary shape) */
+  --radius-lg:   0.5rem;   /* 8px  — standard cards, dropdowns, modals */
+  --radius-xl:   1rem;     /* 16px — feature cards, image containers */
+  --radius-2xl:  1.5rem;   /* 24px — hero cards, prominent containers */
+  /* radius-full: use Tailwind's built-in `rounded-full` (9999px) */
+
+  /* ─── Z-Index Scale ─────────────────────────────────────────────────────── */
+  /*
+     Z-index is a system. Never use arbitrary numbers in components.
+     Tailwind utilities generated: z-base, z-raised, z-dropdown, z-sticky,
+     z-overlay, z-modal, z-toast
+  */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+
+  /* ─── Animation: Duration ──────────────────────────────────────────────── */
+  /*
+     Tailwind utilities generated: duration-instant, duration-fast,
+     duration-normal, duration-deliberate, duration-slow, duration-cinematic
+  */
+  --duration-instant:    100ms; /* Hover color changes, focus rings */
+  --duration-fast:       200ms; /* Button states, icon transforms */
+  --duration-normal:     300ms; /* Navigation transitions, dropdowns */
+  --duration-deliberate: 500ms; /* Card hover lifts, modal appears */
+  --duration-slow:       700ms; /* Page section enters, hero elements */
+  --duration-cinematic:  1200ms; /* Full-page transitions, 3D scene loads */
+
+  /* ─── Animation: Easing ────────────────────────────────────────────────── */
+  /*
+     Tailwind utility generated: ease-signature
+     Standard easings (ease-in, ease-out, ease-in-out) are Tailwind defaults.
+  */
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+  /*
+     The brand easing. Aggressive ease-out: fast start, soft landing.
+     Reads as confident and physical. Used for all element entrances.
+  */
+
+  /* ─── Typography: Letter Spacing ───────────────────────────────────────── */
+  /*
+     Tailwind utilities generated: tracking-display, tracking-heading,
+     tracking-tight, tracking-label, tracking-micro
+  */
+  --tracking-display: -0.02em; /* Cormorant at display sizes */
+  --tracking-heading: -0.01em; /* Cormorant at heading sizes */
+  --tracking-tight:    0.01em; /* Inter at UI heading sizes */
+  --tracking-label:   0.08em;  /* Inter uppercase button/label text */
+  --tracking-micro:   0.1em;   /* Inter legal and fine print */
+
+  /* ─── Glassmorphism ────────────────────────────────────────────────────── */
+  /*
+     Used in exactly two contexts: nav bar over hero, mobile sticky CTA bar.
+     Never on cards, modals, or section backgrounds.
+  */
+  --glass-nav-blur:     20px;
+  --glass-nav-saturate: 180%;
+  --glass-nav-bg:       rgba(245, 242, 237, 0.72); /* Ivory at 72% */
+  --glass-nav-border:   rgba(245, 242, 237, 0.30);
+
+  --glass-cta-blur:     16px;
+  --glass-cta-bg:       rgba(245, 242, 237, 0.85); /* Ivory at 85% */
+
+  /* ─── Layout ────────────────────────────────────────────────────────────── */
+  --content-width:       80rem;  /* 1280px — maximum content container width */
+  --content-padding-x:   5rem;   /* 80px  — desktop side margin */
+  --content-padding-md:  2.5rem; /* 40px  — tablet side margin */
+  --content-padding-sm:  1.25rem; /* 20px — mobile side margin */
+
+  /* ─── Navigation ────────────────────────────────────────────────────────── */
+  --nav-height:         4.5rem;  /* 72px desktop */
+  --mobile-nav-height:  4rem;    /* 64px mobile bottom bar */
+}
+
+/* =============================================================================
+   Dark Mode Token Overrides
+   Future: uncomment and populate when dark mode is implemented.
+   No code changes required in components or globals.css.
+   ============================================================================= */
+/*
+[data-theme="dark"],
+.dark {
+  --surface-primary:  var(--onyx);
+  --surface-card:     #242422;
+  --text-primary:     var(--ivory);
+  --text-secondary:   var(--stone);
+  --text-on-dark:     var(--onyx);
+  --border-default:   rgba(245, 242, 237, 0.12);
+
+  --shadow-xs-raw:     0 1px 2px  rgba(0, 0, 0, 0.20);
+  --shadow-sm-raw:     0 2px 8px  rgba(0, 0, 0, 0.25);
+  --shadow-md-raw:     0 4px 16px rgba(0, 0, 0, 0.30);
+  --shadow-lg-raw:     0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-xl-raw:     0 16px 64px rgba(0, 0, 0, 0.40);
+
+  --glass-nav-bg:      rgba(26, 26, 24, 0.80);
+  --glass-nav-border:  rgba(26, 26, 24, 0.30);
+  --glass-cta-bg:      rgba(26, 26, 24, 0.88);
+}
+*/
