@@ -167,3 +167,67 @@ export const staggerContainerFastVariants: Variants = {
     },
   },
 };
+
+// ── Hero Section ───────────────────────────────────────────────────────────────
+
+export const heroContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+export const heroItemVariants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+export const heroItemReducedVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const heroItemTransition = {
+  duration: 0.6,
+  ease: SIGNATURE_EASE,
+};
+
+export const heroImageVariants: Variants = {
+  hidden: { opacity: 0, scale: 1.03 },
+  visible: { opacity: 1, scale: 1 },
+};
+
+export const heroImageReducedVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const heroImageTransition = {
+  duration: 0.8,
+  ease: STANDARD_EASE,
+};
+
+export const floatingCardVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
+};
+
+export const floatingCardReducedVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const floatingCard1Transition = {
+  duration: 0.5,
+  ease: SIGNATURE_EASE,
+  delay: 0.8,
+};
+
+export const floatingCard2Transition = {
+  duration: 0.5,
+  ease: SIGNATURE_EASE,
+  delay: 1.0,
+};
