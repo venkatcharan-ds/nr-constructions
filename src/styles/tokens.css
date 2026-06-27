@@ -165,14 +165,17 @@
 
   /* Dark glass — hero CTA panel + floating cards over imagery */
   --glass-dark-blur:     24px;
-  --glass-dark-saturate: 160%;
-  --glass-dark-bg:       rgba(26, 26, 24, 0.58);   /* Onyx at 58% */
-  --glass-dark-border:   rgba(245, 242, 237, 0.09); /* Ivory at 9% */
+  --glass-dark-saturate: 180%;
+  --glass-dark-bg:       rgba(26, 26, 24, 0.72);   /* Onyx at 72% — was 58%, raised for legibility */
+  --glass-dark-border:   rgba(245, 242, 237, 0.18); /* Ivory at 18% — was 9%, now visibly defined */
 
   /* Hero cinematic overlay — gradient layers over the background image */
-  --overlay-cinematic-start: rgba(26, 26, 24, 0.08);
-  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.45);
-  --overlay-cinematic-end:   rgba(26, 26, 24, 0.92);
+  --overlay-cinematic-start: rgba(26, 26, 24, 0.10);
+  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.62); /* was 0.45 — raised for text contrast in mid-frame */
+  --overlay-cinematic-end:   rgba(26, 26, 24, 0.94); /* was 0.92 — slightly deeper at base */
+
+  /* Text shadow — hero heading legibility over bright photography */
+  --hero-text-shadow: 0 2px 24px rgba(26, 26, 24, 0.55), 0 1px 6px rgba(26, 26, 24, 0.35);
 
   /* ─── Layout ────────────────────────────────────────────────────────────── */
   --content-width:       80rem;  /* 1280px — maximum content container width */

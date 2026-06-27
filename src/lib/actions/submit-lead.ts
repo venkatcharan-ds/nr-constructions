@@ -2,8 +2,6 @@
 
 import { z } from "zod/v4";
 import { insertLead, getLeadByPhone } from "@/lib/db/queries";
-import type { ClientAttribution } from "@/lib/db/attribution";
-import { detectDevice } from "@/lib/db/attribution";
 
 // ── Input schema ──────────────────────────────────────────────────────────────
 

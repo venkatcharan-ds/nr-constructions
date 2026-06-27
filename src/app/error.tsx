@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 interface ErrorPageProps {
   /** The error that was thrown. `digest` is a server-side identifier for log correlation. */
@@ -92,7 +93,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
           Try again
         </button>
 
-        <a
+        <Link
           href="/"
           className={[
             "inline-flex items-center justify-center",
@@ -108,7 +109,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
           ].join(" ")}
         >
           Go home
-        </a>
+        </Link>
       </div>
     </main>
   );

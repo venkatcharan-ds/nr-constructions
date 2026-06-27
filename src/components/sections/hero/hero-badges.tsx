@@ -22,7 +22,7 @@ export function HeroBadges() {
               "rounded-full border",
               variant === "success"
                 ? "bg-success/15 text-success border-success/30"
-                : "bg-ivory/8 text-ivory/75 border-ivory/15",
+                : "bg-ivory/12 text-ivory border-ivory/25",
             )}
           >
             {variant === "success" && (

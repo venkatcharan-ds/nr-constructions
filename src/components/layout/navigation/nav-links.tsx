@@ -149,7 +149,6 @@ export function NavLinks({ isScrolled }: NavLinksProps) {
                 id={dropdownId}
                 items={item.items}
                 isOpen={isOpen}
-                isScrolled={isScrolled}
                 onMouseEnter={clearCloseTimer}
                 onMouseLeave={scheduleClose}
               />

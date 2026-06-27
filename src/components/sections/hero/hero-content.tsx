@@ -46,7 +46,7 @@ export function HeroContent() {
             variants={item}
             transition={heroItemTransition}
             className={cn(
-              "font-display tracking-display text-ivory text-balance",
+              "font-display tracking-display text-ivory text-balance text-shadow-hero",
               "text-heading-1 md:text-display-2 lg:text-display-1",
               "mb-space-5",
             )}
@@ -58,7 +58,7 @@ export function HeroContent() {
           <motion.p
             variants={item}
             transition={heroItemTransition}
-            className="text-body-lg text-stone text-pretty max-w-lg mb-space-6"
+            className="text-body-lg text-ivory/75 text-pretty max-w-lg mb-space-6"
           >
             {PROJECT.hero.subheading}
           </motion.p>
@@ -78,7 +78,7 @@ export function HeroContent() {
             )}
           >
             <HeroStats />
-            <div className="sm:border-l sm:border-ivory/10 sm:pl-space-5 sm:ml-auto shrink-0">
+            <div className="sm:border-l sm:border-ivory/20 sm:pl-space-5 sm:ml-auto shrink-0">
               <HeroCTA />
             </div>
           </motion.div>
@@ -92,7 +92,7 @@ export function HeroContent() {
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
           aria-hidden="true"
         >
-          <ChevronDown className="w-5 h-5 text-ivory/30" />
+          <ChevronDown className="w-5 h-5 text-ivory/50" />
         </motion.div>
       </div>
     </div>

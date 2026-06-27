@@ -19,8 +19,6 @@ interface NavDropdownProps {
   items: NavDropdownItem[];
   /** Whether this dropdown is currently open. Controlled externally by NavLinks. */
   isOpen: boolean;
-  /** Whether the nav is in its scrolled (glass) state. */
-  isScrolled: boolean;
   /** Called when the mouse enters the dropdown panel itself (prevents early close). */
   onMouseEnter: () => void;
   /** Called when the mouse leaves the dropdown panel. */
@@ -39,7 +37,6 @@ export function NavDropdown({
   id,
   items,
   isOpen,
-  isScrolled,
   onMouseEnter,
   onMouseLeave,
 }: NavDropdownProps) {

@@ -488,12 +488,24 @@
   /* Cinematic overlay — full-screen hero. Darkens bottom for text, lightens top for image. */
   .overlay-cinematic {
     background:
+      /* Vertical gradient: heavy dark base fading up */
       linear-gradient(
         to top,
         var(--overlay-cinematic-end)   0%,
-        var(--overlay-cinematic-mid)   45%,
+        var(--overlay-cinematic-mid)   35%,   /* was 45% — keeps mid zone darker for heading legibility */
         var(--overlay-cinematic-start) 100%
+      ),
+      /* Left-edge vignette: eases the text zone away from the bright image centre */
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--onyx) 32%, transparent) 0%,
+        transparent 60%
       );
+  }
+
+  /* Hero heading text shadow — token-referenced, not hardcoded */
+  .text-shadow-hero {
+    text-shadow: var(--hero-text-shadow);
   }
 
   .overlay-subtle {

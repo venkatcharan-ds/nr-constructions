@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ZoomIn, Download, Maximize2 } from "lucide-react";
+import { X, Download, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";

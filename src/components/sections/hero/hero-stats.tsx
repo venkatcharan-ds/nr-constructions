@@ -11,7 +11,7 @@ export function HeroStats() {
 
   return (
     <div>
-      <p className="text-label tracking-micro uppercase text-stone/60 mb-space-1">
+      <p className="text-label tracking-micro uppercase text-ivory/55 mb-space-1">
         Starting from
       </p>
       <p
@@ -20,7 +20,7 @@ export function HeroStats() {
       >
         {formattedPrice}
       </p>
-      <p className="text-label text-stone/60 tracking-tight mt-space-1">
+      <p className="text-label text-ivory/55 tracking-tight mt-space-1">
         {label}
       </p>
     </div>
