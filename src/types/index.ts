@@ -20,7 +20,12 @@ export type VisitStatus =
   | "no_show";
 
 /** Image category for a project. */
-export type ImageCategory = "exterior" | "interior" | "amenity" | "location";
+export type ImageCategory =
+  | "exterior"
+  | "interior"
+  | "amenity"
+  | "location"
+  | "floor-plan";
 
 /** Lead acquisition source. */
 export type LeadSource =

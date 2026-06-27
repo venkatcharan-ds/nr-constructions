@@ -231,3 +231,60 @@ export const floatingCard2Transition = {
   ease: SIGNATURE_EASE,
   delay: 1.0,
 };
+
+// ── Section scroll-entrance (whileInView) ──────────────────────────────────────
+// Used by every page section below the hero. Pair with viewport={{ once: true }}.
+
+export const sectionVariants: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0 },
+};
+
+export const sectionReducedVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const sectionTransition = {
+  duration: 0.6,
+  ease: SIGNATURE_EASE,
+};
+
+// ── FAQ Accordion ──────────────────────────────────────────────────────────────
+
+export const accordionVariants: Variants = {
+  collapsed: { height: 0, opacity: 0 },
+  expanded: { height: "auto", opacity: 1 },
+};
+
+export const accordionReducedVariants: Variants = {
+  collapsed: { opacity: 0 },
+  expanded: { opacity: 1 },
+};
+
+export const accordionTransition = {
+  duration: 0.35,
+  ease: SIGNATURE_EASE,
+};
+
+// ── Gallery Lightbox ───────────────────────────────────────────────────────────
+
+export const lightboxBackdropVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const lightboxImageVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.94 },
+  visible: { opacity: 1, scale: 1 },
+};
+
+export const lightboxReducedVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const lightboxTransition = {
+  duration: 0.3,
+  ease: SIGNATURE_EASE,
+};

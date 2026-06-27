@@ -1,15 +1,8 @@
 import { cn } from "@/lib/utils";
-
-const BADGES = [
-  { id: "status", label: "Ready to Move", variant: "success" as const },
-  { id: "area", label: "102–103 sqm", variant: "default" as const },
-  { id: "type", label: "2 BHK", variant: "default" as const },
-  { id: "lift", label: "Lift", variant: "default" as const },
-  { id: "parking", label: "Covered Parking", variant: "default" as const },
-] as const;
+import { PROJECT } from "@/data/project";
 
 /**
- * Feature badge row rendered inside the hero stagger container.
+ * Feature badge row driven by PROJECT.badges from the data layer.
  * Animated as a single unit by the parent HeroContent stagger — no internal motion.
  */
 export function HeroBadges() {
@@ -19,7 +12,7 @@ export function HeroBadges() {
       role="list"
       aria-label="Key features"
     >
-      {BADGES.map(({ id, label, variant }) => (
+      {PROJECT.badges.map(({ id, label, variant }) => (
         <li key={id}>
           <span
             className={cn(
