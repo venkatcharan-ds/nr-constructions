@@ -27,8 +27,9 @@ export function HeroCTA() {
           "bg-laterite text-ivory",
           "text-label tracking-label uppercase font-medium",
           "shadow-accent",
-          "transition-all duration-fast",
-          "hover:bg-laterite-dark hover:shadow-lg",
+          "transition-all duration-fast ease-signature",
+          "hover:bg-laterite-dark hover:shadow-lg hover:-translate-y-0.5",
+          "active:translate-y-0 active:shadow-accent",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-laterite",
           "focus-visible:ring-offset-2 focus-visible:ring-offset-onyx",
         )}
@@ -47,11 +48,13 @@ export function HeroCTA() {
         className={cn(
           "inline-flex items-center gap-space-3",
           "px-space-6 py-space-4 rounded-md",
-          "border border-ivory/30 text-ivory",
+          "bg-whatsapp text-white",
           "text-label tracking-label uppercase font-medium",
-          "transition-all duration-fast",
-          "hover:border-ivory/70 hover:bg-ivory/8",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ivory/60",
+          "shadow-sm",
+          "transition-all duration-fast ease-signature",
+          "hover:opacity-90 hover:-translate-y-0.5 hover:shadow-md",
+          "active:translate-y-0 active:opacity-100",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-whatsapp",
           "focus-visible:ring-offset-2 focus-visible:ring-offset-onyx",
         )}
       >

@@ -163,22 +163,44 @@
   --glass-cta-blur:     16px;
   --glass-cta-bg:       rgba(245, 242, 237, 0.85); /* Ivory at 85% */
 
-  /* Dark glass — hero CTA panel + floating cards over imagery */
+  /* Dark glass — floating cards over imagery */
   --glass-dark-blur:     28px;
   --glass-dark-saturate: 180%;
-  --glass-dark-bg:       rgba(26, 26, 24, 0.80);   /* Onyx at 80% — solid, legible CTA panel */
-  --glass-dark-border:   rgba(245, 242, 237, 0.20); /* Ivory at 20% — clearly defined edge */
+  --glass-dark-bg:       rgba(26, 26, 24, 0.68); /* 68% — legible over any photo */
+  --glass-dark-border:   rgba(245, 242, 237, 0.28); /* 28% — clearly defined card edge */
 
-  /* Hero cinematic overlay — three-layer composite over the background image */
-  --overlay-cinematic-start: rgba(26, 26, 24, 0.08); /* near-transparent at sky */
-  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.72); /* strong at mid-frame where heading sits */
-  --overlay-cinematic-end:   rgba(26, 26, 24, 0.97); /* near-opaque at base for CTA panel */
+  /* Hero CTA panel — heavier glass for the action zone */
+  --glass-hero-panel-bg:     rgba(26, 26, 24, 0.82); /* 82% — high-contrast action zone */
+  --glass-hero-panel-blur:   40px; /* strong blur for premium glass feel */
+  --glass-hero-panel-border: rgba(193, 127, 74, 0.45); /* laterite accent — visible top edge */
+  --glass-hero-panel-shadow: 0 8px 40px rgba(26, 26, 24, 0.60), 0 0 0 1px rgba(245, 242, 237, 0.10);
 
-  /* Text shadow — hero heading: deep shadow for guaranteed legibility on any photo */
+  /* Hero price card — right-column focal point */
+  --glass-price-card-bg:     rgba(26, 26, 24, 0.75); /* 75% — solid enough to read price */
+  --glass-price-card-border: rgba(193, 127, 74, 0.50); /* stronger laterite top accent */
+  --glass-price-card-glow:   0 0 48px rgba(193, 127, 74, 0.15), 0 8px 32px rgba(26, 26, 24, 0.50);
+
+  /* Hero cinematic overlay — strong enough to guarantee heading legibility */
+  --overlay-cinematic-start: rgba(26, 26, 24, 0.05); /* sky stays near-transparent */
+  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.68); /* restored — heading zone requires this */
+  --overlay-cinematic-end:   rgba(26, 26, 24, 0.92); /* near-opaque base for CTA panel */
+
+  /* Nav legibility overlay — top-down vignette */
+  --overlay-nav-start: rgba(26, 26, 24, 0.50);
+  --overlay-nav-end:   rgba(26, 26, 24, 0.00);
+
+  /* Hero image focal point */
+  --hero-image-position: 70% center;
+
+  /* Laterite warm glow */
+  --laterite-glow: 0 0 40px rgba(193, 127, 74, 0.20);
+
+  /* Text shadow — hero heading: multi-layer deep shadow for WCAG AA over any background */
   --hero-text-shadow:
-    0 2px 32px rgba(26, 26, 24, 0.90),
-    0 1px 8px  rgba(26, 26, 24, 0.70),
-    0 0px 2px  rgba(26, 26, 24, 0.50);
+    0 1px 0px  rgba(26, 26, 24, 1.00),
+    0 2px 8px  rgba(26, 26, 24, 0.95),
+    0 4px 20px rgba(26, 26, 24, 0.85),
+    0 8px 40px rgba(26, 26, 24, 0.70);
 
   /* Third-party brand colours — exceptions to the palette, never used decoratively */
   --whatsapp: #25D366; /* WhatsApp brand green — FAB only */

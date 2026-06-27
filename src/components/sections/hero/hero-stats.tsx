@@ -11,16 +11,16 @@ export function HeroStats() {
 
   return (
     <div>
-      <p className="text-label tracking-micro uppercase text-ivory/55 mb-space-1">
+      <p className="text-label tracking-micro uppercase text-ivory/70 mb-space-1">
         Starting from
       </p>
       <p
-        className="font-display text-heading-1 tracking-heading text-laterite num-tabular"
+        className="font-display text-display-2 tracking-display text-laterite num-tabular leading-none"
         aria-label={`Starting from ${formattedPrice}`}
       >
         {formattedPrice}
       </p>
-      <p className="text-label text-ivory/55 tracking-tight mt-space-1">
+      <p className="text-label text-ivory/70 tracking-tight mt-space-1">
         {label}
       </p>
     </div>

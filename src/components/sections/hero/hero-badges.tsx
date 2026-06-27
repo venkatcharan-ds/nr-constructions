@@ -17,12 +17,12 @@ export function HeroBadges() {
           <span
             className={cn(
               "inline-flex items-center gap-space-2",
-              "px-space-3 py-space-1",
+              "px-space-4 py-space-2",
               "text-label tracking-label uppercase font-medium",
               "rounded-full border",
               variant === "success"
-                ? "bg-success/15 text-success border-success/30"
-                : "bg-ivory/12 text-ivory border-ivory/25",
+                ? "bg-success/15 text-success border-success/35"
+                : "bg-ivory/8 text-ivory border-ivory/40",
             )}
           >
             {variant === "success" && (

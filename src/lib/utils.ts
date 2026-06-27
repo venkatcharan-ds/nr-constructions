@@ -1,5 +1,57 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/*
+ * tailwind-merge does not know about our custom design tokens.
+ * Without this config, it classifies `text-ivory` as the same conflict
+ * group as `text-heading-2` (both are unknown `text-*` classes), then
+ * keeps only the last one — silently dropping our color.
+ *
+ * We register:
+ *   - Custom brand colors → text-ivory, bg-ivory, border-ivory etc. are
+ *     correctly identified as COLOR utilities, not font-size utilities.
+ *   - Custom font sizes → text-display-1, text-heading-2 etc. are
+ *     correctly identified as FONT-SIZE utilities.
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      color: [
+        "onyx",
+        "ivory",
+        "stone",
+        "fog",
+        "white",
+        "deep-water",
+        "whatsapp",
+        "laterite",
+        "laterite-light",
+        "laterite-dark",
+        "success",
+        "error",
+      ],
+    },
+    classGroups: {
+      "font-size": [
+        {
+          text: [
+            "display-1",
+            "display-2",
+            "heading-1",
+            "heading-2",
+            "heading-3",
+            "heading-4",
+            "body-lg",
+            "body-md",
+            "body-sm",
+            "label",
+            "micro",
+          ],
+        },
+      ],
+    },
+  },
+});
 
 /**
  * Merge Tailwind classes safely.

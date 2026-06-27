@@ -495,28 +495,57 @@
   */
   .overlay-cinematic {
     background:
-      /* 1. Bottom vignette: near-opaque base → transparent sky */
+      /* 1. Bottom vignette: near-opaque base → near-transparent sky — preserves photography */
       linear-gradient(
         to top,
         var(--overlay-cinematic-end)                        0%,
-        var(--overlay-cinematic-mid)                       28%,
-        color-mix(in srgb, var(--onyx) 18%, transparent)  60%,
+        var(--overlay-cinematic-mid)                       30%,
+        color-mix(in srgb, var(--onyx) 12%, transparent)  62%,
         var(--overlay-cinematic-start)                    100%
       ),
-      /* 2. Left-column darkening: text & CTA live in the left 50% */
+      /* 2. Left-column protection: strong where heading lives, fades at 68% so right stays vivid */
       linear-gradient(
         to right,
-        color-mix(in srgb, var(--onyx) 70%, transparent)  0%,
-        color-mix(in srgb, var(--onyx) 40%, transparent) 30%,
-        color-mix(in srgb, var(--onyx) 10%, transparent) 55%,
-        transparent                                        75%
+        color-mix(in srgb, var(--onyx) 68%, transparent)  0%,
+        color-mix(in srgb, var(--onyx) 42%, transparent) 32%,
+        color-mix(in srgb, var(--onyx) 12%, transparent) 55%,
+        transparent                                        68%
       ),
-      /* 3. Radial spot behind typography: lower-left ellipse */
+      /* 3. Radial spot behind heading — anchored lower-left, moderate strength */
       radial-gradient(
-        ellipse 65% 55% at 18% 88%,
-        color-mix(in srgb, var(--onyx) 60%, transparent)  0%,
+        ellipse 55% 50% at 16% 80%,
+        color-mix(in srgb, var(--onyx) 45%, transparent)  0%,
         transparent                                       100%
       );
+  }
+
+  /* Nav legibility — top-down vignette so nav text is always readable over bright sky */
+  .overlay-nav {
+    background: linear-gradient(
+      to bottom,
+      var(--overlay-nav-start)  0%,
+      var(--overlay-nav-end)   22%
+    );
+  }
+
+  /* Hero CTA panel — premium glass with laterite accent top border */
+  .glass-hero-panel {
+    background-color: var(--glass-hero-panel-bg);
+    backdrop-filter: blur(var(--glass-hero-panel-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-hero-panel-blur)) saturate(180%);
+    border: 1px solid rgba(245, 242, 237, 0.10);
+    border-top: 1px solid var(--glass-hero-panel-border);
+    box-shadow: var(--glass-hero-panel-shadow);
+  }
+
+  /* Hero price card — laterite-accented focal point with warm glow */
+  .glass-price-card {
+    background-color: var(--glass-price-card-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(245, 242, 237, 0.10);
+    border-top: 2px solid var(--glass-price-card-border);
+    box-shadow: var(--glass-price-card-glow);
   }
 
   /* Hero heading text shadow — token-referenced */
