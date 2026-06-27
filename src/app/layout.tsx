@@ -166,6 +166,13 @@ export default function RootLayout({
           "overflow-x-hidden", // prevents horizontal scroll from GSAP/R3F
         ].join(" ")}
       >
+        {/* Skip to content — WCAG 2.1 SC 2.4.1 */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[600] focus:px-4 focus:py-2 focus:bg-onyx focus:text-ivory focus:rounded-md focus:text-sm focus:font-medium focus:outline-none focus:ring-2 focus:ring-laterite"
+        >
+          Skip to content
+        </a>
         <Providers>{children}</Providers>
       </body>
     </html>

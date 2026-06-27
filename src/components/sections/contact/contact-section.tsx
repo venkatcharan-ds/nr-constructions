@@ -26,6 +26,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { COMPANY } from "@/data/company";
 import { submitSiteVisit } from "@/lib/actions/submit-site-visit";
 import { detectDevice } from "@/lib/db/attribution";
+import { trackEvent } from "@/components/analytics/google-analytics";
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -34,6 +35,7 @@ const schema = z.object({
   phone: z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
   preferred_date: z.string().optional(),
   message: z.string().max(500).optional(),
+  website: z.literal("").optional(), // honeypot
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -62,18 +64,21 @@ function ContactCard({
   icon: Icon,
   label,
   value,
+  trackLabel,
 }: {
   href: string;
   external?: boolean;
   icon: React.ElementType;
   label: string;
   value: string;
+  trackLabel?: string;
 }) {
   return (
     <a
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
+      onClick={() => trackLabel && trackEvent({ action: "contact_click", category: "Contact", label: trackLabel })}
       className={cn(
         "flex items-center gap-space-4 p-space-5 rounded-xl",
         "border border-ivory/10 bg-ivory/5",
@@ -134,6 +139,7 @@ export function ContactSection() {
 
       if (!result.success) throw new Error(result.error);
       setSubmitted(true);
+      trackEvent({ action: "site_visit_booked", category: "Contact", label: "contact_form" });
     } catch (e) {
       setServerError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
     }
@@ -169,18 +175,21 @@ export function ContactSection() {
                 icon={Phone}
                 label="Call Us"
                 value={COMPANY.contact.phone.primaryFormatted}
+                trackLabel="phone_primary"
               />
               <ContactCard
                 href={COMPANY.contact.phone.secondaryTel}
                 icon={Phone}
                 label="Alternate"
                 value={COMPANY.contact.phone.secondaryFormatted}
+                trackLabel="phone_secondary"
               />
               <ContactCard
                 href={`mailto:${COMPANY.contact.email}`}
                 icon={Mail}
                 label="Email"
                 value={COMPANY.contact.email}
+                trackLabel="email"
               />
               <ContactCard
                 href={whatsAppUrl(COMPANY.contact.whatsapp.defaultMessage)}
@@ -188,6 +197,7 @@ export function ContactSection() {
                 icon={MessageCircle}
                 label="WhatsApp"
                 value="Chat instantly"
+                trackLabel="whatsapp"
               />
             </div>
 
@@ -357,6 +367,18 @@ export function ContactSection() {
                           "focus:outline-none focus:ring-2 focus:ring-laterite",
                           "transition-all duration-fast text-body-sm",
                         )}
+                      />
+                    </div>
+
+                    {/* Honeypot — hidden from humans, bots fill it */}
+                    <div aria-hidden="true" className="absolute opacity-0 pointer-events-none h-0 overflow-hidden">
+                      <label htmlFor="contact-website">Website</label>
+                      <input
+                        id="contact-website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        {...register("website")}
                       />
                     </div>
 

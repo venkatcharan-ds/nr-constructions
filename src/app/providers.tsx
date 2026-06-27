@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ export function Providers({ children }: ProvidersProps) {
       enableSystem={false}
       disableTransitionOnChange
     >
+      <GoogleAnalytics />
       {children}
 
       <Toaster
