@@ -402,6 +402,14 @@
     -webkit-backdrop-filter: blur(var(--glass-cta-blur));
   }
 
+  /* Dark glass — hero CTA panel, floating cards over dark imagery */
+  .glass-dark {
+    background-color: var(--glass-dark-bg);
+    backdrop-filter:  blur(var(--glass-dark-blur)) saturate(var(--glass-dark-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-dark-blur)) saturate(var(--glass-dark-saturate));
+    border: 1px solid var(--glass-dark-border);
+  }
+
   /* ── Content Container ───────────────────────────────────────────────── */
   /*
      The site-wide content width constraint. Apply to the inner wrapper of
@@ -466,6 +474,26 @@
       rgba(26, 26, 24, 0.70) 0%,
       rgba(26, 26, 24, 0.00) 60%
     );
+  }
+
+  /* Left-edge fade — blends hero image into the dark left panel on desktop */
+  .overlay-hero-left {
+    background: linear-gradient(
+      to right,
+      var(--onyx) 0%,
+      transparent 100%
+    );
+  }
+
+  /* Cinematic overlay — full-screen hero. Darkens bottom for text, lightens top for image. */
+  .overlay-cinematic {
+    background:
+      linear-gradient(
+        to top,
+        var(--overlay-cinematic-end)   0%,
+        var(--overlay-cinematic-mid)   45%,
+        var(--overlay-cinematic-start) 100%
+      );
   }
 
   .overlay-subtle {

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import {
@@ -10,101 +10,91 @@ import {
   heroItemReducedVariants,
   heroItemTransition,
 } from "@/lib/motion/variants";
+import { PROJECT } from "@/data/project";
 import { HeroBadges } from "./hero-badges";
 import { HeroStats } from "./hero-stats";
 import { HeroCTA } from "./hero-cta";
 
-/**
- * Left panel of the hero section.
- *
- * Acts as the Framer Motion stagger container — each direct child
- * (eyebrow, headline, subheading, badges, stats, CTAs) fades up in sequence.
- *
- * On mobile: order-2 (below image). On desktop: order-1 (left column).
- */
 export function HeroContent() {
-  const prefersReducedMotion = useReducedMotion();
-  const itemVariants = prefersReducedMotion
-    ? heroItemReducedVariants
-    : heroItemVariants;
+  const rm = useReducedMotion();
+  const item = rm ? heroItemReducedVariants : heroItemVariants;
 
   return (
-    <motion.div
-      variants={heroContainerVariants}
-      initial="hidden"
-      animate="visible"
-      className={cn(
-        // Stacking order
-        "order-2 lg:order-1",
-        // Layout
-        "flex flex-col justify-center",
-        // Spacing — mobile pads inward; desktop respects nav height at top
-        "px-space-5 md:px-space-8 lg:px-space-10",
-        "pt-space-8 pb-space-10 lg:pt-nav",
-        // Height — desktop fills viewport height
-        "lg:min-h-screen",
-      )}
-    >
-      {/* Eyebrow */}
-      <motion.div
-        variants={itemVariants}
-        transition={heroItemTransition}
-        className="flex items-center gap-space-2 mb-space-5"
-      >
-        <MapPin
-          className="w-3.5 h-3.5 text-laterite shrink-0"
+    <div className="absolute inset-0 flex flex-col justify-end pointer-events-none">
+      {/* ── Main content — bottom of viewport ─────────────────────────── */}
+      <div className="container-site pb-space-10 md:pb-space-11 pointer-events-auto">
+        <motion.div
+          variants={heroContainerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-2xl"
+        >
+          {/* Eyebrow */}
+          <motion.div
+            variants={item}
+            transition={heroItemTransition}
+            className="inline-flex items-center gap-space-2 mb-space-5"
+          >
+            <MapPin className="w-3.5 h-3.5 text-laterite shrink-0" aria-hidden="true" />
+            <span className="text-label tracking-label uppercase text-laterite font-medium">
+              {PROJECT.hero.eyebrow}
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1
+            variants={item}
+            transition={heroItemTransition}
+            className={cn(
+              "font-display tracking-display text-ivory text-balance",
+              "text-heading-1 md:text-display-2 lg:text-display-1",
+              "mb-space-5",
+            )}
+          >
+            {PROJECT.hero.headline}
+          </motion.h1>
+
+          {/* Subheading */}
+          <motion.p
+            variants={item}
+            transition={heroItemTransition}
+            className="text-body-lg text-stone text-pretty max-w-lg mb-space-6"
+          >
+            {PROJECT.hero.subheading}
+          </motion.p>
+
+          {/* Badges */}
+          <motion.div variants={item} transition={heroItemTransition} className="mb-space-7">
+            <HeroBadges />
+          </motion.div>
+
+          {/* Glass CTA panel — price + action buttons */}
+          <motion.div
+            variants={item}
+            transition={heroItemTransition}
+            className={cn(
+              "glass-dark rounded-2xl p-space-5",
+              "flex flex-col sm:flex-row sm:items-center gap-space-5",
+            )}
+          >
+            <HeroStats />
+            <div className="sm:border-l sm:border-ivory/10 sm:pl-space-5 sm:ml-auto shrink-0">
+              <HeroCTA />
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* ── Scroll indicator ───────────────────────────────────────────── */}
+      <div className="absolute bottom-space-6 left-1/2 -translate-x-1/2 pointer-events-none hidden md:flex flex-col items-center gap-space-2">
+        <motion.div
+          animate={rm ? {} : { y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
           aria-hidden="true"
-        />
-        <span className="text-label tracking-label uppercase text-laterite font-medium">
-          Corlim, North Goa
-        </span>
-      </motion.div>
-
-      {/* Headline */}
-      <motion.h1
-        variants={itemVariants}
-        transition={heroItemTransition}
-        className={cn(
-          "font-display tracking-display text-ivory text-balance",
-          "text-heading-1 md:text-display-2 lg:text-display-1",
-          "max-w-lg mb-space-5",
-        )}
-      >
-        Ready to Move Luxury Apartments in Goa
-      </motion.h1>
-
-      {/* Subheading */}
-      <motion.p
-        variants={itemVariants}
-        transition={heroItemTransition}
-        className="text-body-lg text-stone text-pretty max-w-md mb-space-6"
-      >
-        G+4 premium residences with lift, covered parking, spacious 2&nbsp;BHK
-        homes and exceptional connectivity.
-      </motion.p>
-
-      {/* Badges */}
-      <motion.div
-        variants={itemVariants}
-        transition={heroItemTransition}
-        className="mb-space-7"
-      >
-        <HeroBadges />
-      </motion.div>
-
-      {/* Price */}
-      <motion.div
-        variants={itemVariants}
-        transition={heroItemTransition}
-        className="mb-space-8"
-      >
-        <HeroStats />
-      </motion.div>
-
-      {/* CTAs */}
-      <motion.div variants={itemVariants} transition={heroItemTransition}>
-        <HeroCTA />
-      </motion.div>
-    </motion.div>
+        >
+          <ChevronDown className="w-5 h-5 text-ivory/30" />
+        </motion.div>
+      </div>
+    </div>
   );
 }

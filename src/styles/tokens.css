@@ -155,10 +155,6 @@
   --tracking-micro:   0.1em;   /* Inter legal and fine print */
 
   /* ─── Glassmorphism ────────────────────────────────────────────────────── */
-  /*
-     Used in exactly two contexts: nav bar over hero, mobile sticky CTA bar.
-     Never on cards, modals, or section backgrounds.
-  */
   --glass-nav-blur:     20px;
   --glass-nav-saturate: 180%;
   --glass-nav-bg:       rgba(245, 242, 237, 0.72); /* Ivory at 72% */
@@ -166,6 +162,17 @@
 
   --glass-cta-blur:     16px;
   --glass-cta-bg:       rgba(245, 242, 237, 0.85); /* Ivory at 85% */
+
+  /* Dark glass — hero CTA panel + floating cards over imagery */
+  --glass-dark-blur:     24px;
+  --glass-dark-saturate: 160%;
+  --glass-dark-bg:       rgba(26, 26, 24, 0.58);   /* Onyx at 58% */
+  --glass-dark-border:   rgba(245, 242, 237, 0.09); /* Ivory at 9% */
+
+  /* Hero cinematic overlay — gradient layers over the background image */
+  --overlay-cinematic-start: rgba(26, 26, 24, 0.08);
+  --overlay-cinematic-mid:   rgba(26, 26, 24, 0.45);
+  --overlay-cinematic-end:   rgba(26, 26, 24, 0.92);
 
   /* ─── Layout ────────────────────────────────────────────────────────────── */
   --content-width:       80rem;  /* 1280px — maximum content container width */
