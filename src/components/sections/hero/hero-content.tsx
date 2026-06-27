@@ -20,9 +20,17 @@ export function HeroContent() {
   const item = rm ? heroItemReducedVariants : heroItemVariants;
 
   return (
-    <div className="absolute inset-0 flex flex-col justify-end pointer-events-none">
-      {/* ── Main content — bottom of viewport ─────────────────────────── */}
-      <div className="container-site pb-space-10 md:pb-space-11 pointer-events-auto">
+    <div className="absolute inset-0 flex flex-col pointer-events-none">
+      {/*
+        Flex spacer — grows to consume all vertical space above the content on tall
+        screens (replicating the luxury bottom-anchor aesthetic), but never shrinks
+        below the nav height so content can never overflow upward behind the nav.
+        Desktop nav: h-nav (4.5rem). Mobile nav: h-mobile-nav (4rem).
+      */}
+      <div className="flex-1 min-h-mobile-nav lg:min-h-nav" aria-hidden="true" />
+
+      {/* ── Main content — anchored toward lower-left ──────────────────── */}
+      <div className="container-site pb-space-6 sm:pb-space-8 md:pb-space-9 lg:pb-space-10 xl:pb-space-11 pointer-events-auto">
         <motion.div
           variants={heroContainerVariants}
           initial="hidden"

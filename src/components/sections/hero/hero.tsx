@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section
       aria-label="Roshan Apartments — Ready to Move 2 BHK in Goa"
-      className="relative min-h-screen overflow-hidden bg-onyx"
+      className="relative min-h-dvh overflow-hidden bg-onyx"
     >
       <HeroImage />
       <HeroContent />
