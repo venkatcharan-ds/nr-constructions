@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn, Download, Maximize2 } from "lucide-react";
@@ -23,6 +23,7 @@ import {
 import { SectionHeader } from "@/components/ui/section-header";
 import { PROJECT } from "@/data/project";
 import { GALLERY_IMAGES } from "@/data/gallery";
+import { trackEvent } from "@/components/analytics/google-analytics";
 
 const floorPlanImage = GALLERY_IMAGES.find((img) => img.category === "floor-plan")!;
 
@@ -35,6 +36,32 @@ export function FloorPlanSection() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const unit = PROJECT.units[selectedUnit];
+  const openTriggerRef   = useRef<HTMLButtonElement | null>(null);
+  const modalCloseRef    = useRef<HTMLButtonElement | null>(null);
+
+  const openModal = useCallback((trigger: HTMLButtonElement) => {
+    openTriggerRef.current = trigger;
+    setModalOpen(true);
+    trackEvent({ action: "floor_plan_view", category: "FloorPlan", label: "modal_open" });
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    requestAnimationFrame(() => openTriggerRef.current?.focus());
+  }, []);
+
+  // Focus close button when modal opens
+  useEffect(() => {
+    if (modalOpen) requestAnimationFrame(() => modalCloseRef.current?.focus());
+  }, [modalOpen]);
+
+  // Escape key to close
+  useEffect(() => {
+    if (!modalOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeModal(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [modalOpen, closeModal]);
 
   return (
     <section
@@ -110,7 +137,7 @@ export function FloorPlanSection() {
             className="relative mx-auto max-w-3xl mb-space-6"
           >
             <button
-              onClick={() => setModalOpen(true)}
+              onClick={(e) => openModal(e.currentTarget)}
               aria-label="View floor plan full size"
               className={cn(
                 "group relative w-full overflow-hidden rounded-2xl",
@@ -159,6 +186,7 @@ export function FloorPlanSection() {
                 <a
                   href={floorPlanImage.url}
                   download="roshan-apartments-floor-plan.webp"
+                  onClick={() => trackEvent({ action: "floor_plan_download", category: "FloorPlan", label: "download_webp" })}
                   className={cn(
                     "inline-flex items-center gap-space-2",
                     "px-space-4 py-space-2 rounded-lg",
@@ -197,13 +225,14 @@ export function FloorPlanSection() {
             exit="hidden"
             transition={lightboxTransition}
             className="fixed inset-0 z-modal bg-onyx/96 flex flex-col items-center justify-center p-space-5"
-            onClick={() => setModalOpen(false)}
+            onClick={closeModal}
             role="dialog"
             aria-modal="true"
             aria-label="Floor plan full size"
           >
             <button
-              onClick={() => setModalOpen(false)}
+              ref={modalCloseRef}
+              onClick={closeModal}
               aria-label="Close (Esc)"
               className={cn(
                 "absolute top-space-5 right-space-5",

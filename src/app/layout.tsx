@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { SITE_CONFIG } from "@/config/site";
+import { validateEnv } from "@/lib/env";
 import "./globals.css";
 
 /* ── Fonts ─────────────────────────────────────────────────────────────────── */
@@ -144,6 +145,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  validateEnv();
   return (
     /*
        suppressHydrationWarning — required because next-themes writes

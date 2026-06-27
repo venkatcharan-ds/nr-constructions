@@ -18,6 +18,7 @@ import {
 } from "@/lib/motion/variants";
 import { SectionHeader } from "@/components/ui/section-header";
 import { GALLERY_IMAGES, getImagesByCategory } from "@/data/gallery";
+import { trackEvent } from "@/components/analytics/google-analytics";
 import type { ImageCategory } from "@/types";
 
 type FilterTab = { label: string; value: ImageCategory | "all" };
@@ -36,14 +37,26 @@ export function GallerySection() {
   const [activeTab, setActiveTab] = useState<ImageCategory | "all">("all");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const triggerRef   = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const displayImages =
     activeTab === "all"
       ? [...GALLERY_IMAGES].sort((a, b) => a.sortOrder - b.sortOrder)
       : getImagesByCategory(activeTab as ImageCategory);
 
-  const openLightbox = useCallback((index: number) => setLightboxIndex(index), []);
-  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const openLightbox = useCallback((index: number, trigger?: HTMLButtonElement | null) => {
+    if (trigger) triggerRef.current = trigger;
+    setLightboxIndex(index);
+    trackEvent({ action: "gallery_open", category: "Gallery", label: displayImages[index]?.id });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null);
+    // Restore focus to the image button that opened the lightbox
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }, []);
 
   const prev = useCallback(() => {
     setLightboxIndex((i) =>
@@ -69,9 +82,10 @@ export function GallerySection() {
     return () => document.removeEventListener("keydown", onKey);
   }, [lightboxIndex, prev, next, closeLightbox]);
 
-  // Scroll active thumbnail into view
+  // Focus close button when lightbox opens; scroll active thumbnail into view
   useEffect(() => {
     if (lightboxIndex !== null) {
+      requestAnimationFrame(() => closeButtonRef.current?.focus());
       thumbnailRefs.current[lightboxIndex]?.scrollIntoView({
         behavior: "smooth",
         block: "nearest",
@@ -149,7 +163,7 @@ export function GallerySection() {
                   className="break-inside-avoid mb-space-3"
                 >
                   <button
-                    onClick={() => openLightbox(i)}
+                    onClick={(e) => openLightbox(i, e.currentTarget)}
                     aria-label={`View ${img.altText}`}
                     className={cn(
                       "relative w-full overflow-hidden rounded-xl group",
@@ -205,6 +219,7 @@ export function GallerySection() {
                 {currentImage.altText}
               </p>
               <button
+                ref={closeButtonRef}
                 onClick={closeLightbox}
                 aria-label="Close lightbox (Esc)"
                 className={cn(
