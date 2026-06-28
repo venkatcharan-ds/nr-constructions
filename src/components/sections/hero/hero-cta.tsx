@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CalendarCheck, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
@@ -9,7 +8,7 @@ import { trackEvent } from "@/components/analytics/google-analytics";
 
 /**
  * Hero CTA button pair driven by PROJECT.hero from the data layer.
- * Primary: Book Site Visit → /contact
+ * Primary: Book Site Visit → #contact (smooth scroll to contact section)
  * Secondary: WhatsApp chat with PROJECT.hero.visitMessage
  */
 export function HeroCTA() {
@@ -18,8 +17,8 @@ export function HeroCTA() {
   return (
     <div className="flex flex-wrap items-center gap-space-4">
       {/* Primary CTA */}
-      <Link
-        href="/contact"
+      <a
+        href="#contact"
         onClick={() => trackEvent({ action: "cta_click", category: "Hero", label: "book_site_visit" })}
         className={cn(
           "inline-flex items-center gap-space-3",
@@ -36,7 +35,7 @@ export function HeroCTA() {
       >
         <CalendarCheck className="w-4 h-4 shrink-0" aria-hidden="true" />
         {PROJECT.hero.ctaPrimary}
-      </Link>
+      </a>
 
       {/* Secondary CTA */}
       <a

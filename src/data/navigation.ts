@@ -61,7 +61,7 @@ export const NAV_ITEMS: NavItem[] = [
     ],
   },
   { kind: "link", label: "About", href: "/about" },
-  { kind: "link", label: "Contact", href: "/contact" },
+  { kind: "link", label: "Contact", href: "#contact" },
 ];
 
 export const MOBILE_NAV_ITEMS: MobileNavItem[] = [

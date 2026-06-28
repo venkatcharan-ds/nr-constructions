@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Phone, MessageCircle, CalendarCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CONTACT } from "@/config/site";
@@ -71,8 +70,8 @@ export function NavCtaButtons({ isScrolled }: NavCtaButtonsProps) {
       </a>
 
       {/* Book a Visit — primary CTA */}
-      <Link
-        href="/contact"
+      <a
+        href="#contact"
         className={cn(
           "flex items-center gap-space-2 px-space-5 py-space-2",
           "text-label tracking-label uppercase font-medium rounded",
@@ -87,7 +86,7 @@ export function NavCtaButtons({ isScrolled }: NavCtaButtonsProps) {
       >
         <CalendarCheck className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
         <span>Book a Visit</span>
-      </Link>
+      </a>
     </div>
   );
 }
