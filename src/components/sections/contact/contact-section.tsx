@@ -68,7 +68,7 @@ function ContactCard({
 }: {
   href: string;
   external?: boolean;
-  icon: React.ElementType;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
   value: string;
   trackLabel?: string;
