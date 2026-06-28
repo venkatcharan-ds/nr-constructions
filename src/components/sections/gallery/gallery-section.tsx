@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
@@ -40,17 +40,22 @@ export function GallerySection() {
   const triggerRef   = useRef<HTMLButtonElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const displayImages =
-    activeTab === "all"
-      ? [...GALLERY_IMAGES].sort((a, b) => a.sortOrder - b.sortOrder)
-      : getImagesByCategory(activeTab as ImageCategory);
+  const displayImages = useMemo(
+    () =>
+      activeTab === "all"
+        ? [...GALLERY_IMAGES].sort((a, b) => a.sortOrder - b.sortOrder)
+        : getImagesByCategory(activeTab as ImageCategory),
+    [activeTab],
+  );
 
-  const openLightbox = useCallback((index: number, trigger?: HTMLButtonElement | null) => {
-    if (trigger) triggerRef.current = trigger;
-    setLightboxIndex(index);
-    trackEvent({ action: "gallery_open", category: "Gallery", label: displayImages[index]?.id });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const openLightbox = useCallback(
+    (index: number, trigger?: HTMLButtonElement | null) => {
+      if (trigger) triggerRef.current = trigger;
+      setLightboxIndex(index);
+      trackEvent({ action: "gallery_open", category: "Gallery", label: displayImages[index]?.id });
+    },
+    [displayImages],
+  );
 
   const closeLightbox = useCallback(() => {
     setLightboxIndex(null);
@@ -158,8 +163,9 @@ export function GallerySection() {
               {displayImages.map((img, i) => (
                 <motion.div
                   key={img.id}
-                  variants={item}
-                  transition={{ ...fadeUpTransition, delay: i * 0.04 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ ...fadeUpTransition, delay: i * 0.05 }}
                   className="break-inside-avoid mb-space-3"
                 >
                   <button
