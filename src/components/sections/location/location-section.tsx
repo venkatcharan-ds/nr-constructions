@@ -112,34 +112,6 @@ export function LocationSection() {
               );
             })}
           </div>
-
-          {/* ── Address strip ──────────────────────────────────────── */}
-          <motion.div
-            variants={item}
-            transition={fadeUpTransition}
-            className="mt-space-8 p-space-5 rounded-xl bg-fog border border-border-default flex flex-wrap items-center gap-space-4"
-          >
-            <MapPin className="w-5 h-5 text-laterite shrink-0" aria-hidden="true" />
-            <div>
-              <p className="text-body-sm font-medium text-onyx">
-                Plot No. 14, Roshan Apartments, La Oceana Colony
-              </p>
-              <p className="text-body-sm text-stone">Dona Paula, Goa — 403004</p>
-            </div>
-            <a
-              href={`https://www.google.com/maps?q=${LOCATION.coordinates.lat},${LOCATION.coordinates.lng}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "ml-auto text-label tracking-label uppercase text-laterite",
-                "hover:text-laterite-dark underline-offset-2 hover:underline",
-                "transition-colors duration-fast",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-laterite focus-visible:ring-offset-2",
-              )}
-            >
-              Get Directions
-            </a>
-          </motion.div>
         </motion.div>
       </div>
     </section>
