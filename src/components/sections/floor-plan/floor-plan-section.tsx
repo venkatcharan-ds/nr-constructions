@@ -9,12 +9,9 @@ import { formatPrice } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import {
   staggerContainerVariants,
-  sectionVariants,
-  sectionReducedVariants,
   fadeUpVariants,
   fadeUpReducedVariants,
   fadeUpTransition,
-  sectionTransition,
   lightboxBackdropVariants,
   lightboxImageVariants,
   lightboxReducedVariants,
@@ -30,8 +27,6 @@ const floorPlanImage = GALLERY_IMAGES.find((img) => img.category === "floor-plan
 export function FloorPlanSection() {
   const rm = useReducedMotion();
   const item = rm ? fadeUpReducedVariants : fadeUpVariants;
-  const imgVariants = rm ? sectionReducedVariants : sectionVariants;
-
   const [selectedUnit, setSelectedUnit] = useState<0 | 1>(0);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -131,9 +126,14 @@ export function FloorPlanSection() {
           </motion.div>
 
           {/* ── Floor plan image ─────────────────────────────────────── */}
+          {/*
+           * Plain div — not a motion.div — so the image never re-animates
+           * when the user switches unit types. Both units share the same
+           * floor plan image; only the metadata strip below changes.
+           */}
           <motion.div
-            variants={imgVariants}
-            transition={{ ...sectionTransition, delay: 0.15 }}
+            variants={item}
+            transition={fadeUpTransition}
             className="relative mx-auto max-w-3xl mb-space-6"
           >
             <button
@@ -166,42 +166,51 @@ export function FloorPlanSection() {
               </div>
             </button>
 
-            {/* Unit details strip below the image */}
-            <div className="mt-space-4 p-space-5 rounded-xl bg-surface-card border border-border-default flex flex-wrap items-center gap-x-space-7 gap-y-space-3">
-              <div>
-                <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Configuration</p>
-                <p className="text-body-md font-medium text-onyx">{unit.bhk} BHK</p>
-              </div>
-              <div>
-                <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Carpet Area</p>
-                <p className="text-body-md font-medium text-onyx num-tabular">{unit.areaSqm} sqm <span className="text-stone text-body-sm font-normal">({unit.areaSqft.toLocaleString("en-IN")} sqft)</span></p>
-              </div>
-              <div>
-                <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Price</p>
-                <p className="text-body-md font-medium text-laterite num-tabular">
-                  {formatPrice(PROJECT.units[selectedUnit].price)}
-                </p>
-              </div>
-              <div className="ml-auto shrink-0">
-                <a
-                  href={floorPlanImage.url}
-                  download="roshan-apartments-floor-plan.webp"
-                  onClick={() => trackEvent({ action: "floor_plan_download", category: "FloorPlan", label: "download_webp" })}
-                  className={cn(
-                    "inline-flex items-center gap-space-2",
-                    "px-space-4 py-space-2 rounded-lg",
-                    "border border-border-default bg-fog",
-                    "text-body-sm text-onyx font-medium",
-                    "hover:border-laterite/40 hover:bg-surface-card",
-                    "transition-all duration-fast",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-laterite focus-visible:ring-offset-2",
-                  )}
-                >
-                  <Download className="w-4 h-4 text-stone" aria-hidden="true" />
-                  Download
-                </a>
-              </div>
-            </div>
+            {/* Unit metadata strip — keyed so only text crossfades on unit switch */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={selectedUnit}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="mt-space-4 p-space-5 rounded-xl bg-surface-card border border-border-default flex flex-wrap items-center gap-x-space-7 gap-y-space-3"
+              >
+                <div>
+                  <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Configuration</p>
+                  <p className="text-body-md font-medium text-onyx">{unit.bhk} BHK</p>
+                </div>
+                <div>
+                  <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Carpet Area</p>
+                  <p className="text-body-md font-medium text-onyx num-tabular">{unit.areaSqm} sqm <span className="text-stone text-body-sm font-normal">({unit.areaSqft.toLocaleString("en-IN")} sqft)</span></p>
+                </div>
+                <div>
+                  <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Price</p>
+                  <p className="text-body-md font-medium text-laterite num-tabular">
+                    {formatPrice(unit.price)}
+                  </p>
+                </div>
+                <div className="ml-auto shrink-0">
+                  <a
+                    href={floorPlanImage.url}
+                    download="roshan-apartments-floor-plan.webp"
+                    onClick={() => trackEvent({ action: "floor_plan_download", category: "FloorPlan", label: "download_webp" })}
+                    className={cn(
+                      "inline-flex items-center gap-space-2",
+                      "px-space-4 py-space-2 rounded-lg",
+                      "border border-border-default bg-fog",
+                      "text-body-sm text-onyx font-medium",
+                      "hover:border-laterite/40 hover:bg-surface-card",
+                      "transition-all duration-fast",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-laterite focus-visible:ring-offset-2",
+                    )}
+                  >
+                    <Download className="w-4 h-4 text-stone" aria-hidden="true" />
+                    Download
+                  </a>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
 
           {/* ── Room list ────────────────────────────────────────────── */}
