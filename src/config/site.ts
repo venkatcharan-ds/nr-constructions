@@ -28,11 +28,11 @@ export const CONTACT = {
       "Hi, I'm interested in a 2 BHK at NR Constructions, Corlim, Goa. Please share details.",
   },
   address: {
-    line1: "Plot No.14, Roshan Apartments",
+    line1: "Plot No.14, SK Royal & SK Elite",
     line2: "La Oceana Colony, Dona Paula",
     city: "Goa",
     pincode: "403004",
-    full: "Plot No.14, Roshan Apartments, La Oceana Colony, Dona Paula, Goa – 403004",
+    full: "Plot No.14, SK Royal & SK Elite, La Oceana Colony, Dona Paula, Goa – 403004",
   },
 } as const;
 

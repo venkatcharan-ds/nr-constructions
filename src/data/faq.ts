@@ -13,7 +13,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "ready-to-move",
     question: "Is the building ready to move in?",
     answer:
-      "Yes. Roshan Apartments is fully constructed and complete. Units are available for immediate possession — there is no waiting period.",
+      "Yes. SK Royal & SK Elite is fully constructed and complete. Units are available for immediate possession — there is no waiting period.",
   },
   {
     id: "price-inclusive",
@@ -61,7 +61,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "location",
     question: "How far is the apartment from Panjim?",
     answer:
-      "Roshan Apartments is in Corlim, approximately 6 km from Panjim city centre — about a 10-minute drive. The location offers easy access to NH66, Goa University, and the airport.",
+      "SK Royal & SK Elite is in Corlim, approximately 6 km from Panjim city centre — about a 10-minute drive. The location offers easy access to NH66, Goa University, and the airport.",
   },
   {
     id: "documentation",

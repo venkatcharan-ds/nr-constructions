@@ -54,7 +54,7 @@ export async function submitLead(
     return { success: true, leadId: existing.data.id, isReturn: true };
   }
 
-  // 3. Resolve project_id (Roshan Apartments slug is the only active project)
+  // 3. Resolve project_id (SK Royal & SK Elite slug is the only active project)
   const PROJECT_SLUG = "roshan-apartments";
   let projectId: string | null = null;
   try {

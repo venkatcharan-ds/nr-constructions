@@ -56,7 +56,7 @@ export function buildApartmentListingSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Apartment",
-    name: "Roshan Apartments — 2 BHK in Corlim, Goa",
+    name: "SK Royal & SK Elite — 2 BHK in Corlim, Goa",
     description:
       "Ready-to-move premium 2 BHK apartments in Corlim, North Goa. G+4 building with lift, covered parking. Available in 102 sqm and 103 sqm configurations starting ₹61 Lakhs.",
     url: BASE_URL,
@@ -69,7 +69,7 @@ export function buildApartmentListingSchema() {
     },
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Plot No.14, Roshan Apartments, La Oceana Colony",
+      streetAddress: "Plot No.14, SK Royal & SK Elite, La Oceana Colony",
       addressLocality: "Corlim",
       addressRegion: "North Goa",
       postalCode: "403110",
@@ -142,7 +142,7 @@ export function buildBreadcrumbSchema() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Roshan Apartments",
+        name: "SK Royal & SK Elite",
         item: `${BASE_URL}/#about`,
       },
     ],

@@ -193,7 +193,7 @@ export function FloorPlanSection() {
                 <div className="ml-auto shrink-0">
                   <a
                     href={floorPlanImage.url}
-                    download="roshan-apartments-floor-plan.webp"
+                    download="sk-royal-sk-elite-floor-plan.webp"
                     onClick={() => trackEvent({ action: "floor_plan_download", category: "FloorPlan", label: "download_webp" })}
                     className={cn(
                       "inline-flex items-center gap-space-2",

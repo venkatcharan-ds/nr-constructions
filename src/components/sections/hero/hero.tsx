@@ -10,7 +10,7 @@ import { HeroImage } from "./hero-image";
 export function Hero() {
   return (
     <section
-      aria-label="Roshan Apartments — Ready to Move 2 BHK in Goa"
+      aria-label="SK Royal & SK Elite — Ready to Move 2 BHK in Goa"
       className="relative min-h-dvh overflow-hidden bg-onyx"
     >
       <HeroImage />

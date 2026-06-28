@@ -72,18 +72,18 @@ export interface ProjectData {
 
 export const PROJECT: ProjectData = {
   slug: "corlim",
-  name: "Roshan Apartments",
+  name: "SK Royal & SK Elite",
   subtitle: "Premium 2 BHK Residences in Corlim, North Goa",
   status: "active",
   totalFloors: 4,
 
   address: {
-    line1: "Plot No.14, Roshan Apartments",
+    line1: "Plot No.14, SK Royal & SK Elite",
     line2: "La Oceana Colony, Dona Paula",
     city: "Goa",
     state: "Goa",
     pincode: "403004",
-    full: "Plot No.14, Roshan Apartments, La Oceana Colony, Dona Paula, Goa–403004",
+    full: "Plot No.14, SK Royal & SK Elite, La Oceana Colony, Dona Paula, Goa–403004",
   },
 
   hero: {
@@ -134,7 +134,7 @@ export const PROJECT: ProjectData = {
   floatingCardStatus: "G+4 Building · Corlim",
 
   aboutHighlight:
-    "Roshan Apartments is a G+4 residential building in Corlim, North Goa — complete, ready to move in, and priced transparently at ₹61 Lakhs per unit.",
+    "SK Royal & SK Elite is a G+4 residential building in Corlim, North Goa — complete, ready to move in, and priced transparently at ₹61 Lakhs per unit.",
 
   keySpecs: [
     { id: "config", label: "Configuration", value: "2 BHK" },

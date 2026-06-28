@@ -117,7 +117,7 @@ export function GallerySection() {
           <SectionHeader
             eyebrow="Photo Gallery"
             heading="See It For Yourself"
-            subheading="Browse every corner of Roshan Apartments — from the street facade to the balcony view."
+            subheading="Browse every corner of SK Royal & SK Elite — from the street facade to the balcony view."
             light
             prefersReducedMotion={rm}
           />

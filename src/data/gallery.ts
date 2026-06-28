@@ -34,7 +34,7 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   {
     id: "ext-front",
     url: "/assets/optimized/exterior-building-front.webp",
-    altText: "Front elevation of Roshan Apartments, Corlim, Goa",
+    altText: "Front elevation of SK Royal & SK Elite, Corlim, Goa",
     category: "exterior",
     sortOrder: 1,
     isHero: true,
@@ -46,7 +46,7 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   {
     id: "ext-angle-1",
     url: "/assets/optimized/exterior-building-angle-1.webp",
-    altText: "Roshan Apartments — angled view showing full G+4 structure",
+    altText: "SK Royal & SK Elite — angled view showing full G+4 structure",
     category: "exterior",
     sortOrder: 2,
     isHero: false,
@@ -58,7 +58,7 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   {
     id: "ext-angle-2",
     url: "/assets/optimized/exterior-building-angle-2.webp",
-    altText: "Roshan Apartments — second angle view with surroundings",
+    altText: "SK Royal & SK Elite — second angle view with surroundings",
     category: "exterior",
     sortOrder: 3,
     isHero: false,
@@ -70,7 +70,7 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   {
     id: "ext-night",
     url: "/assets/optimized/exterior-building-night.webp",
-    altText: "Roshan Apartments illuminated at night",
+    altText: "SK Royal & SK Elite illuminated at night",
     category: "exterior",
     sortOrder: 4,
     isHero: false,
@@ -84,7 +84,7 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   {
     id: "int-living",
     url: "/assets/optimized/interior-living-room.webp",
-    altText: "Spacious living room in a 2 BHK unit at Roshan Apartments",
+    altText: "Spacious living room in a 2 BHK unit at SK Royal & SK Elite",
     category: "interior",
     sortOrder: 5,
     isHero: false,

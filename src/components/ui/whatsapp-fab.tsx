@@ -6,7 +6,7 @@ import { useWhatsApp } from "@/hooks/use-whatsapp";
 import { trackEvent } from "@/components/analytics/google-analytics";
 
 const ENQUIRY_MESSAGE =
-  "Hello! I'm interested in the Roshan Apartments in Goa. Could you share more details about availability and pricing?";
+  "Hello! I'm interested in SK Royal & SK Elite in Goa. Could you share more details about availability and pricing?";
 
 /**
  * Globally fixed WhatsApp floating action button.
@@ -22,7 +22,7 @@ export function WhatsAppFab() {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with us on WhatsApp — enquire about Roshan Apartments"
+      aria-label="Chat with us on WhatsApp — enquire about SK Royal & SK Elite"
       onClick={() =>
         trackEvent({
           action: "whatsapp_click",

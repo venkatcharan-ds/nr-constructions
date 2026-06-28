@@ -50,7 +50,7 @@ export const COMPANY: CompanyData = {
 
   about: [
     "NR Constructions is a Goa-based residential builder with a singular focus on quality and transparency. Every home we deliver is one we would be proud to live in ourselves.",
-    "Our Corlim project — Roshan Apartments — is a G+4 building with spacious 2 BHK units of 102–103 sqm, lift access, covered parking, and finishes that speak for themselves. It is ready to move in today.",
+    "Our Corlim project — SK Royal & SK Elite — is a G+4 building with spacious 2 BHK units of 102–103 sqm, lift access, covered parking, and finishes that speak for themselves. It is ready to move in today.",
     "We believe buying a home should feel straightforward. No hidden costs, no delays, no fine print. Just a good home at a fair price, delivered on our word.",
   ],
 
@@ -97,11 +97,11 @@ export const COMPANY: CompanyData = {
         "Hi, I'm interested in a 2 BHK at NR Constructions, Corlim, Goa. Please share details.",
     },
     address: {
-      line1: "Plot No.14, Roshan Apartments",
+      line1: "Plot No.14, SK Royal & SK Elite",
       line2: "La Oceana Colony, Dona Paula",
       city: "Goa",
       pincode: "403004",
-      full: "Plot No.14, Roshan Apartments, La Oceana Colony, Dona Paula, Goa–403004",
+      full: "Plot No.14, SK Royal & SK Elite, La Oceana Colony, Dona Paula, Goa–403004",
     },
   },
 };
