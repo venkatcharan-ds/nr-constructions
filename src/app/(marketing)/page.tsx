@@ -19,7 +19,6 @@ const AmenitiesSection = dynamic(() => import("@/components/sections/amenities")
 const FloorPlanSection = dynamic(() => import("@/components/sections/floor-plan").then(m => ({ default: m.FloorPlanSection })));
 const GallerySection  = dynamic(() => import("@/components/sections/gallery").then(m => ({ default: m.GallerySection })));
 const LocationSection = dynamic(() => import("@/components/sections/location").then(m => ({ default: m.LocationSection })));
-const ApartmentViewerSection = dynamic(() => import("@/components/sections/apartment-viewer").then(m => ({ default: m.ApartmentViewerLazy })));
 const FaqSection      = dynamic(() => import("@/components/sections/faq").then(m => ({ default: m.FaqSection })));
 const ContactSection  = dynamic(() => import("@/components/sections/contact").then(m => ({ default: m.ContactSection })));
 const Footer          = dynamic(() => import("@/components/layout/footer").then(m => ({ default: m.Footer })));
@@ -63,10 +62,7 @@ export default function HomePage() {
         <ErrorBoundary>
           <GallerySection />
         </ErrorBoundary>
-        <ErrorBoundary>
-          <ApartmentViewerSection />
-        </ErrorBoundary>
-        <LocationSection />
+<LocationSection />
         <FaqSection />
         <ErrorBoundary>
           <ContactSection />
