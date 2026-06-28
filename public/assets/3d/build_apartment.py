@@ -171,6 +171,38 @@ def place_ph_asset(
 MAT: dict[str, bpy.types.Material] = {}
 
 
+# ── Blender version-safe shader helpers ───────────────────────────────────────
+# Socket names changed significantly between Blender 3.x → 4.0 → 5.x.
+# These wrappers make every access a no-op when a socket or property no longer
+# exists, avoiding KeyError / AttributeError on newer builds.
+
+def _si(node, name, value) -> bool:
+    """Set a node *input* socket value safely. Returns True if the socket exists."""
+    if name in node.inputs:
+        node.inputs[name].default_value = value
+        return True
+    return False
+
+
+def _np(node, name, value) -> bool:
+    """Set a node *property* safely. Returns True if the attribute exists."""
+    if hasattr(node, name):
+        try:
+            setattr(node, name, value)
+            return True
+        except (AttributeError, TypeError, RuntimeError):
+            pass
+    return False
+
+
+def _inp(node, *names):
+    """Return the first existing input socket matching any of the given names."""
+    for n in names:
+        if n in node.inputs:
+            return node.inputs[n]
+    return node.inputs[0] if node.inputs else None
+
+
 def clear_scene():
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
@@ -187,8 +219,15 @@ def coll(name, parent=None):
 def set_smooth(obj, angle=30):
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.shade_smooth()
-    obj.data.use_auto_smooth = True
-    obj.data.auto_smooth_angle = math.radians(angle)
+    # use_auto_smooth was removed in Blender 4.1; fall back to the new operator.
+    if hasattr(obj.data, "use_auto_smooth"):
+        obj.data.use_auto_smooth = True
+        obj.data.auto_smooth_angle = math.radians(angle)
+    elif hasattr(bpy.ops.object, "shade_smooth_by_angle"):
+        try:
+            bpy.ops.object.shade_smooth_by_angle(angle=math.radians(angle))
+        except Exception:
+            pass
 
 
 def add_bevel(obj, width=0.015, segs=2):
@@ -207,19 +246,30 @@ def mat_plain(name, color, roughness=0.7, metallic=0.0, alpha=1.0,
     out  = nt.nodes.new("ShaderNodeOutputMaterial")
     bsdf = nt.nodes.new("ShaderNodeBsdfPrincipled")
     nt.links.new(bsdf.outputs[0], out.inputs[0])
-    bsdf.inputs["Base Color"].default_value  = (*color, 1.0)
-    bsdf.inputs["Roughness"].default_value   = roughness
-    bsdf.inputs["Metallic"].default_value    = metallic
-    bsdf.inputs["IOR"].default_value         = ior
+    _si(bsdf, "Base Color", (*color, 1.0))
+    _si(bsdf, "Roughness",  roughness)
+    _si(bsdf, "Metallic",   metallic)
+    _si(bsdf, "IOR",        ior)
     if transmission > 0:
-        bsdf.inputs["Transmission Weight"].default_value = transmission
-        m.blend_method  = "BLEND"; m.shadow_method = "NONE"
+        # "Transmission Weight" in Blender 4.0+; "Transmission" in 3.x
+        if not _si(bsdf, "Transmission Weight", transmission):
+            _si(bsdf, "Transmission", transmission)
+        try:
+            m.blend_method  = "BLEND"
+            m.shadow_method = "NONE"
+        except (AttributeError, TypeError):
+            pass
     if emission:
-        bsdf.inputs["Emission Color"].default_value    = (*emission, 1.0)
-        bsdf.inputs["Emission Strength"].default_value = 2.0
+        # "Emission Color" / "Emission Strength" in Blender 4.0+; "Emission" in 3.x
+        if not _si(bsdf, "Emission Color", (*emission, 1.0)):
+            _si(bsdf, "Emission", (*emission, 1.0))
+        _si(bsdf, "Emission Strength", 2.0)
     if alpha < 1.0:
-        m.blend_method = "BLEND"
-        bsdf.inputs["Alpha"].default_value = alpha
+        try:
+            m.blend_method = "BLEND"
+        except (AttributeError, TypeError):
+            pass
+        _si(bsdf, "Alpha", alpha)
     MAT[name] = m; return m
 
 
@@ -233,26 +283,37 @@ def mat_marble():
     noise = nt.nodes.new("ShaderNodeTexNoise")
     wave  = nt.nodes.new("ShaderNodeTexWave")
     ramp  = nt.nodes.new("ShaderNodeValToRGB")
-    mix   = nt.nodes.new("ShaderNodeMixRGB")
+    # ShaderNodeMixRGB is the legacy name; Blender 4.0+ may expose it as
+    # ShaderNodeMix with RGBA data_type and renamed sockets ("Factor","A","B").
+    # Try creating it and probe which socket names are actually present.
+    try:
+        mix = nt.nodes.new("ShaderNodeMixRGB")
+    except RuntimeError:
+        mix = nt.nodes.new("ShaderNodeMix")
+        _np(mix, "data_type", "RGBA")
+    _np(mix, "blend_type", "MULTIPLY")
+    _si(mix, "Fac",    0.4)   # Blender 3.x socket name
+    _si(mix, "Factor", 0.4)   # Blender 4+ socket name (no-op if not present)
     coord = nt.nodes.new("ShaderNodeTexCoord")
     sc    = nt.nodes.new("ShaderNodeMapping")
-    noise.inputs["Scale"].default_value     = 6.0
-    noise.inputs["Detail"].default_value    = 12.0
-    noise.inputs["Roughness"].default_value = 0.6
-    wave.inputs["Scale"].default_value      = 3.0
-    wave.inputs["Distortion"].default_value = 2.0
+    _si(noise, "Scale",     6.0)
+    _si(noise, "Detail",    12.0)
+    _si(noise, "Roughness", 0.6)
+    _si(wave,  "Scale",     3.0)
+    _si(wave,  "Distortion", 2.0)
     ramp.color_ramp.elements[0].color = (0.90, 0.88, 0.85, 1)
     ramp.color_ramp.elements[1].color = (0.78, 0.75, 0.72, 1)
-    mix.blend_type = "MULTIPLY"; mix.inputs["Fac"].default_value = 0.4
-    nt.links.new(coord.outputs["Generated"], sc.inputs["Vector"])
-    nt.links.new(sc.outputs["Vector"],    noise.inputs["Vector"])
-    nt.links.new(sc.outputs["Vector"],    wave.inputs["Vector"])
-    nt.links.new(noise.outputs["Fac"],    ramp.inputs["Fac"])
-    nt.links.new(ramp.outputs["Color"],   mix.inputs["Color1"])
-    nt.links.new(wave.outputs["Color"],   mix.inputs["Color2"])
-    nt.links.new(mix.outputs["Color"],    bsdf.inputs["Base Color"])
-    bsdf.inputs["Roughness"].default_value = 0.08
-    bsdf.inputs["Specular IOR Level"].default_value = 0.9
+    nt.links.new(coord.outputs["Generated"], _inp(sc,    "Vector"))
+    nt.links.new(sc.outputs["Vector"],       _inp(noise, "Vector"))
+    nt.links.new(sc.outputs["Vector"],       _inp(wave,  "Vector"))
+    nt.links.new(noise.outputs[0],           _inp(ramp,  "Fac"))
+    nt.links.new(ramp.outputs[0],            _inp(mix,   "Color1", "A"))
+    nt.links.new(wave.outputs[0],            _inp(mix,   "Color2", "B"))
+    nt.links.new(mix.outputs[0],             _inp(bsdf,  "Base Color"))
+    _si(bsdf, "Roughness",       0.08)
+    # "Specular IOR Level" in Blender 4.0+; "Specular" in 3.x
+    if not _si(bsdf, "Specular IOR Level", 0.9):
+        _si(bsdf, "Specular", 0.9)
     nt.links.new(bsdf.outputs[0], out.inputs[0])
     MAT[name] = m; return m
 
@@ -269,24 +330,24 @@ def mat_wood(name="Wood_Floor", color=(0.42, 0.28, 0.14)):
     ramp  = nt.nodes.new("ShaderNodeValToRGB")
     coord = nt.nodes.new("ShaderNodeTexCoord")
     sc    = nt.nodes.new("ShaderNodeMapping")
-    sc.inputs["Scale"].default_value = (8, 1, 1)
-    wave.wave_type = "BANDS"
-    wave.inputs["Scale"].default_value      = 6.0
-    wave.inputs["Distortion"].default_value = 3.0
-    noise.inputs["Scale"].default_value     = 18.0
-    noise.inputs["Detail"].default_value    = 4.0
+    _si(sc, "Scale", (8.0, 1.0, 1.0))
+    _np(wave, "wave_type", "BANDS")
+    _si(wave,  "Scale",      6.0)
+    _si(wave,  "Distortion", 3.0)
+    _si(noise, "Scale",      18.0)
+    _si(noise, "Detail",     4.0)
     c0 = (color[0]*0.9, color[1]*0.9, color[2]*0.9)
     ramp.color_ramp.elements[0].color = (*c0,    1)
     ramp.color_ramp.elements[1].color = (*color, 1)
-    bump.inputs["Strength"].default_value = 0.2
-    nt.links.new(coord.outputs["Generated"], sc.inputs["Vector"])
-    nt.links.new(sc.outputs["Vector"],   wave.inputs["Vector"])
-    nt.links.new(sc.outputs["Vector"],   noise.inputs["Vector"])
-    nt.links.new(wave.outputs["Fac"],    ramp.inputs["Fac"])
-    nt.links.new(ramp.outputs["Color"],  bsdf.inputs["Base Color"])
-    nt.links.new(noise.outputs["Fac"],   bump.inputs["Height"])
-    nt.links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
-    bsdf.inputs["Roughness"].default_value = 0.35
+    _si(bump, "Strength", 0.2)
+    nt.links.new(coord.outputs["Generated"], _inp(sc,    "Vector"))
+    nt.links.new(sc.outputs["Vector"],       _inp(wave,  "Vector"))
+    nt.links.new(sc.outputs["Vector"],       _inp(noise, "Vector"))
+    nt.links.new(wave.outputs[1],            _inp(ramp,  "Fac"))     # outputs[1]="Factor"
+    nt.links.new(ramp.outputs[0],            _inp(bsdf,  "Base Color"))
+    nt.links.new(noise.outputs[0],           _inp(bump,  "Height"))
+    nt.links.new(bump.outputs["Normal"],     _inp(bsdf,  "Normal"))
+    _si(bsdf, "Roughness", 0.35)
     nt.links.new(bsdf.outputs[0], out.inputs[0])
     MAT[name] = m; return m
 
@@ -301,22 +362,28 @@ def mat_tile(name="Tile", color=(0.92, 0.92, 0.92), grout=(0.55, 0.55, 0.55), ti
     sc    = nt.nodes.new("ShaderNodeMapping")
     brick = nt.nodes.new("ShaderNodeTexBrick")
     bump  = nt.nodes.new("ShaderNodeBump")
-    sc.inputs["Scale"].default_value = (1/tile_size, 1/tile_size, 1)
-    brick.inputs["Color1"].default_value  = (*color, 1)
-    brick.inputs["Color2"].default_value  = (*color, 1)
-    brick.inputs["Mortar"].default_value  = (*grout, 1)
-    brick.inputs["Mortar Size"].default_value   = 0.04
-    brick.inputs["Mortar Smooth"].default_value = 0.2
-    brick.inputs["Scale"].default_value  = 1.0
-    brick.inputs["Squash"].default_value = 1.0
-    bump.inputs["Strength"].default_value = 0.15
-    nt.links.new(coord.outputs["Generated"], sc.inputs["Vector"])
-    nt.links.new(sc.outputs["Vector"],    brick.inputs["Vector"])
-    nt.links.new(brick.outputs["Color"],  bsdf.inputs["Base Color"])
-    nt.links.new(brick.outputs["Fac"],    bump.inputs["Height"])
-    nt.links.new(bump.outputs["Normal"],  bsdf.inputs["Normal"])
-    bsdf.inputs["Roughness"].default_value = 0.12
-    bsdf.inputs["Specular IOR Level"].default_value = 0.7
+    _si(sc, "Scale", (1/tile_size, 1/tile_size, 1.0))
+    _si(brick, "Color1",        (*color, 1))
+    _si(brick, "Color2",        (*color, 1))
+    _si(brick, "Mortar",        (*grout, 1))
+    _si(brick, "Mortar Size",   0.04)
+    _si(brick, "Mortar Smooth", 0.2)
+    _si(brick, "Scale",         1.0)
+    # "Squash" was an input socket in Blender 3.x but became a node property
+    # in Blender 4.0+ — access it as node.squash, not via inputs[].
+    _si(brick, "Squash",        1.0)   # 3.x socket (no-op in 4+/5+)
+    _np(brick, "squash",        1.0)   # 4.0+ node property
+    _si(brick, "Squash Frequency", 2)  # 3.x socket (no-op in 4+/5+)
+    _np(brick, "squash_frequency", 2)  # 4.0+ node property
+    _si(bump, "Strength", 0.15)
+    nt.links.new(coord.outputs["Generated"], _inp(sc,    "Vector"))
+    nt.links.new(sc.outputs["Vector"],       _inp(brick, "Vector"))
+    nt.links.new(brick.outputs[0],           _inp(bsdf,  "Base Color"))  # outputs[0]="Color"
+    nt.links.new(brick.outputs[1],           _inp(bump,  "Height"))      # outputs[1]="Fac"
+    nt.links.new(bump.outputs["Normal"],     _inp(bsdf,  "Normal"))
+    _si(bsdf, "Roughness", 0.12)
+    if not _si(bsdf, "Specular IOR Level", 0.7):
+        _si(bsdf, "Specular", 0.7)
     nt.links.new(bsdf.outputs[0], out.inputs[0])
     MAT[name] = m; return m
 
@@ -331,16 +398,17 @@ def mat_granite():
     noise = nt.nodes.new("ShaderNodeTexNoise")
     ramp  = nt.nodes.new("ShaderNodeValToRGB")
     coord = nt.nodes.new("ShaderNodeTexCoord")
-    noise.inputs["Scale"].default_value  = 28.0
-    noise.inputs["Detail"].default_value = 16.0
+    _si(noise, "Scale",  28.0)
+    _si(noise, "Detail", 16.0)
     ramp.color_ramp.elements[0].color = (0.08, 0.08, 0.10, 1)
     ramp.color_ramp.elements[1].color = (0.45, 0.42, 0.40, 1)
     e2 = ramp.color_ramp.elements.new(0.5); e2.color = (0.35, 0.32, 0.30, 1)
-    nt.links.new(coord.outputs["Generated"], noise.inputs["Vector"])
-    nt.links.new(noise.outputs["Fac"],  ramp.inputs["Fac"])
-    nt.links.new(ramp.outputs["Color"], bsdf.inputs["Base Color"])
-    bsdf.inputs["Roughness"].default_value = 0.08
-    bsdf.inputs["Specular IOR Level"].default_value = 0.9
+    nt.links.new(coord.outputs["Generated"], _inp(noise, "Vector"))
+    nt.links.new(noise.outputs[0],           _inp(ramp,  "Fac"))
+    nt.links.new(ramp.outputs[0],            _inp(bsdf,  "Base Color"))
+    _si(bsdf, "Roughness", 0.08)
+    if not _si(bsdf, "Specular IOR Level", 0.9):
+        _si(bsdf, "Specular", 0.9)
     nt.links.new(bsdf.outputs[0], out.inputs[0])
     MAT[name] = m; return m
 
@@ -354,11 +422,21 @@ def mat_brushed_metal(name="BrushedMetal", color=(0.72, 0.72, 0.72)):
     m = bpy.data.materials.new(name); m.use_nodes = True
     nt = m.node_tree; nt.nodes.clear()
     out  = nt.nodes.new("ShaderNodeOutputMaterial")
-    bsdf = nt.nodes.new("ShaderNodeBsdfAnisotropic")
+    # ShaderNodeBsdfAnisotropic was deprecated in Blender 4.1 and may be
+    # removed in 5.x — fall back to Principled BSDF with anisotropy inputs.
+    try:
+        bsdf = nt.nodes.new("ShaderNodeBsdfAnisotropic")
+        _si(bsdf, "Color",      (*color, 1))
+        _si(bsdf, "Roughness",  0.15)
+        _si(bsdf, "Anisotropy", 0.6)
+    except RuntimeError:
+        bsdf = nt.nodes.new("ShaderNodeBsdfPrincipled")
+        _si(bsdf, "Base Color",  (*color, 1))
+        _si(bsdf, "Metallic",    1.0)
+        _si(bsdf, "Roughness",   0.15)
+        _si(bsdf, "Anisotropic", 0.6)
+        _si(bsdf, "Anisotropy",  0.6)  # alternative name in some builds
     nt.links.new(bsdf.outputs[0], out.inputs[0])
-    bsdf.inputs["Color"].default_value      = (*color, 1)
-    bsdf.inputs["Roughness"].default_value  = 0.15
-    bsdf.inputs["Anisotropy"].default_value = 0.6
     MAT[name] = m; return m
 
 
@@ -956,10 +1034,11 @@ wnt = world.node_tree; wnt.nodes.clear()
 bg  = wnt.nodes.new("ShaderNodeBackground")
 sky = wnt.nodes.new("ShaderNodeTexSky")
 out = wnt.nodes.new("ShaderNodeOutputWorld")
-sky.sky_type = "PREETHAM"; sky.turbidity = 2.0
-bg.inputs["Strength"].default_value = 0.6
-wnt.links.new(sky.outputs["Color"], bg.inputs["Color"])
-wnt.links.new(bg.outputs["Background"], out.inputs["Surface"])
+_np(sky, "sky_type",  "PREETHAM")
+_np(sky, "turbidity", 2.0)
+_si(bg, "Strength", 0.6)
+wnt.links.new(sky.outputs[0],  _inp(bg,  "Color"))
+wnt.links.new(bg.outputs[0],   _inp(out, "Surface"))
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CAMERAS
