@@ -92,7 +92,7 @@ export function buildApartmentListingSchema() {
       {
         "@type": "Offer",
         name: "2 BHK — Type B (103 sqm)",
-        price: "6300000",
+        price: "6100000",
         priceCurrency: "INR",
         availability: "https://schema.org/InStock",
         seller: { "@type": "Organization", name: "NR Constructions" },

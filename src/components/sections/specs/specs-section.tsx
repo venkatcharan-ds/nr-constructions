@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { CalendarCheck, CheckCircle2, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { formatPrice, formatPriceRange } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import {
   staggerContainerVariants,
   sectionVariants,
@@ -99,7 +99,7 @@ export function SpecsSection() {
                     <div className="border-t border-ivory/10 pt-space-5 mb-space-5">
                       <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Price</p>
                       <p className="font-display text-heading-1 tracking-heading text-laterite num-tabular">
-                        {formatPrice(PROJECT.pricing.min + i * 200_000)}
+                        {formatPrice(unit.price)}
                       </p>
                       <p className="text-micro text-stone mt-space-1">
                         all-inclusive · no hidden charges
@@ -161,9 +161,9 @@ export function SpecsSection() {
                   Book a Site Visit
                 </Link>
                 <p className="text-body-sm text-stone">
-                  Price range:{" "}
+                  Price:{" "}
                   <span className="text-ivory font-medium num-tabular">
-                    {formatPriceRange(PROJECT.pricing.min, PROJECT.pricing.max)}
+                    {formatPrice(PROJECT.pricing.min)}
                   </span>
                 </p>
               </motion.div>

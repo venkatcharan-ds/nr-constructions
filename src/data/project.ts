@@ -24,6 +24,8 @@ export interface UnitSpec {
   areaSqft: number;
   /** Human-readable label: "2 BHK · 102 sqm (1,098 sqft)" */
   label: string;
+  /** Price in INR (paise-free integer). */
+  price: number;
 }
 
 export interface Pricing {
@@ -105,7 +107,7 @@ export const PROJECT: ProjectData = {
 
   pricing: {
     min: 6_100_000,
-    max: 6_500_000,
+    max: 6_100_000,
     unit: "per_flat",
     currency: "INR",
     label: "per unit · all-inclusive",
@@ -118,12 +120,14 @@ export const PROJECT: ProjectData = {
       areaSqm: 102,
       areaSqft: 1098,
       label: "2 BHK · 102 sqm (1,098 sqft)",
+      price: 6_100_000,
     },
     {
       bhk: 2,
       areaSqm: 103,
       areaSqft: 1109,
       label: "2 BHK · 103 sqm (1,109 sqft)",
+      price: 6_100_000,
     },
   ],
 

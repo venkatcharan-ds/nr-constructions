@@ -124,7 +124,7 @@ export function FloorPlanSection() {
                   "ml-auto text-micro font-medium num-tabular",
                   selectedUnit === i ? "text-laterite" : "text-stone",
                 )}>
-                  {formatPrice(PROJECT.pricing.min + i * 200_000)}
+                  {formatPrice(u.price)}
                 </span>
               </button>
             ))}
@@ -179,7 +179,7 @@ export function FloorPlanSection() {
               <div>
                 <p className="text-micro text-stone uppercase tracking-micro mb-space-1">Price</p>
                 <p className="text-body-md font-medium text-laterite num-tabular">
-                  {formatPrice(PROJECT.pricing.min + selectedUnit * 200_000)}
+                  {formatPrice(PROJECT.units[selectedUnit].price)}
                 </p>
               </div>
               <div className="ml-auto shrink-0">
