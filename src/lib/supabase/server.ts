@@ -1,24 +1,23 @@
 import { createClient } from "@supabase/supabase-js";
 
-// ── Server-only Supabase client (service role key) ────────────────────────────
-// Never import this file from Client Components — it holds the service role key.
-// The service role bypasses RLS; use it only in Server Actions and Route Handlers
-// where you have already validated the request.
+// ── Server Supabase client ─────────────────────────────────────────────────────
+// Uses the anon key — all privileged operations (lead insert, site_visit insert)
+// are handled by the SECURITY DEFINER RPC `submit_site_visit_booking`, so the
+// service role key is not required and should not be added to this project.
 
 function createServerClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
     throw new Error(
-      "Missing Supabase server environment variables. " +
-        "Add NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to .env.local.",
+      "Missing Supabase environment variables. " +
+        "Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your environment.",
     );
   }
 
   return createClient(url, key, {
     auth: {
-      // Disable auto-refresh and session persistence on the server
       autoRefreshToken: false,
       persistSession: false,
       detectSessionInUrl: false,

@@ -7,7 +7,9 @@
 const REQUIRED_SERVER = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-  "SUPABASE_SERVICE_ROLE_KEY",
+  // SUPABASE_SERVICE_ROLE_KEY removed — privileged DB operations are handled
+  // by the SECURITY DEFINER RPC `submit_site_visit_booking` so only the
+  // anon key is needed at runtime.
 ] as const;
 
 const OPTIONAL = [
