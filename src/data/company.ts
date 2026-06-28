@@ -83,16 +83,16 @@ export const COMPANY: CompanyData = {
 
   contact: {
     phone: {
-      primary: "9326309465",
-      primaryFormatted: "+91 93263 09465",
-      primaryTel: "tel:+919326309465",
-      secondary: "9405332937",
-      secondaryFormatted: "+91 94053 32937",
-      secondaryTel: "tel:+919405332937",
+      primary: "9405332937",
+      primaryFormatted: "+91 94053 32937",
+      primaryTel: "tel:+919405332937",
+      secondary: "9326309465",
+      secondaryFormatted: "+91 93263 09465",
+      secondaryTel: "tel:+919326309465",
     },
     email: "nagineni.r.rao@gmail.com",
     whatsapp: {
-      number: "919326309465",
+      number: "919405332937",
       defaultMessage:
         "Hi, I'm interested in a 2 BHK at NR Constructions, Corlim, Goa. Please share details.",
     },
